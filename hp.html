@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Human Practices | DogmaOS iGEM 2025</title>
+    
+    <!-- ==================== 样式配置 ==================== -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#0a0d1a',
+              'primary-light': '#1a2340',
+              accent: '#00d9ff',
+              'accent-glow': '#4dffff',
+              success: '#00e676',
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              mono: ['Fira Code', 'monospace'],
+            },
+          },
+        },
+      }
+    </script>
+    
+    <!-- ==================== 外部资源 ==================== -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-primary text-gray-200">
+
+    <!-- ==================== 导航栏 ==================== -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-primary/90 backdrop-blur-md border-b border-accent/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <a href="index.html" class="flex-shrink-0 cursor-pointer group">
+                    <span class="text-2xl font-bold tracking-widest text-white group-hover:text-accent transition-colors">
+                        Dogma<span class="text-accent">OS</span>
+                    </span>
+                </a>
+
+                <!-- 桌面菜单 -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="index.html" class="nav-link">Home</a>
+                        
+                        <!-- Project 下拉菜单 -->
+                        <div class="relative group dropdown-container">
+                            <a href="project.html" class="nav-link flex items-center gap-1">Project <i data-lucide="chevron-down" class="w-4 h-4"></i></a>
+                            <div class="dropdown-menu absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-primary-light border border-accent/20 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                                <a href="project.html#description" class="block px-4 py-2 text-sm hover:text-accent hover:bg-white/5">Description</a>
+                                <a href="project.html#engineering" class="block px-4 py-2 text-sm hover:text-accent hover:bg-white/5">Engineering</a>
+                                <a href="project.html#safety" class="block px-4 py-2 text-sm hover:text-accent hover:bg-white/5">Safety</a>
+                            </div>
+                        </div>
+
+                        <!-- Wetlab 下拉菜单 -->
+                        <div class="relative group dropdown-container">
+                            <a href="wetlab.html" class="nav-link flex items-center gap-1">Wetlab <i data-lucide="chevron-down" class="w-4 h-4"></i></a>
+                            <div class="dropdown-menu absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-primary-light border border-accent/20 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                                <a href="wetlab.html#experiments" class="block px-4 py-2 text-sm hover:text-accent hover:bg-white/5">Experiments</a>
+                                <a href="wetlab.html#results" class="block px-4 py-2 text-sm hover:text-accent hover:bg-white/5">Results</a>
+                                <a href="wetlab.html#parts" class="block px-4 py-2 text-sm hover:text-accent hover:bg-white/5">Parts</a>
+                            </div>
+                        </div>
+
+                        <!-- Human Practices 页面（当前页面高亮） -->
+                        <a href="hp.html" class="nav-link text-accent">Human Practices</a>
+
+                        <!-- Team 下拉菜单 -->
+                        <div class="relative group dropdown-container">
+                            <a href="team.html#members" class="nav-link flex items-center gap-1">Team <i data-lucide="chevron-down" class="w-4 h-4"></i></a>
+                            <div class="dropdown-menu absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-primary-light border border-accent/20 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                                <a href="team.html#members" class="block px-4 py-2 text-sm hover:text-accent hover:bg-white/5">Members</a>
+                                <a href="team.html#timeline" class="block px-4 py-2 text-sm hover:text-accent hover:bg-white/5">Timeline</a>
+                                <a href="team.html#attributions" class="block px-4 py-2 text-sm hover:text-accent hover:bg-white/5">Attributions</a>
+                            </div>
+                        </div>
+
+                        <!-- Award 页面 -->
+                        <a href="award.html" class="nav-link">Awards</a>
+                    </div>
+                </div>
+
+                <!-- 移动端菜单按钮 -->
+                <div class="-mr-2 flex md:hidden">
+                    <button id="mobile-menu-btn" class="p-2 rounded-md text-gray-400 hover:text-white hover:bg-primary-light">
+                        <i data-lucide="menu"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 移动端菜单 -->
+        <div id="mobile-menu" class="hidden md:hidden bg-primary border-b border-accent/20">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-accent">Home</a>
+                <a href="project.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-accent">Project</a>
+                <a href="wetlab.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-accent">Wetlab</a>
+                <a href="#engagement" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-accent">Stakeholder Engagement</a>
+                <a href="#values" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-accent">Community Values</a>
+                <a href="team.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-accent">Team</a>
+                <a href="award.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-accent">Awards</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==================== 主容器 ==================== -->
+    <div class="min-h-screen bg-primary pt-24 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- 页面标题 -->
+            <div class="text-center mb-12 fade-in">
+                <h1 class="text-5xl font-bold text-white mb-6">Human Practices</h1>
+                <p class="text-gray-400 max-w-3xl mx-auto text-lg">
+                    Integrating scientific innovation with social responsibility, ethical considerations, and community engagement
+                </p>
+            </div>
+
+            <!-- 页面导航 -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12 border-b border-gray-800 pb-8">
+                <a href="#engagement" class="px-6 py-2 rounded-full border border-gray-700 hover:border-accent hover:text-accent transition-colors">
+                    Stakeholder Engagement
+                </a>
+                <a href="#values" class="px-6 py-2 rounded-full border border-gray-700 hover:border-accent hover:text-accent transition-colors">
+                    Community Values
+                </a>
+                <a href="#ethics" class="px-6 py-2 rounded-full border border-gray-700 hover:border-accent hover:text-accent transition-colors">
+                    Ethical Considerations
+                </a>
+                <a href="#sustainability" class="px-6 py-2 rounded-full border border-gray-700 hover:border-accent hover:text-accent transition-colors">
+                    Sustainability
+                </a>
+            </div>
+
+            <!-- ==================== 利益相关者参与部分 ==================== -->
+            <section id="engagement" class="mb-20">
+                <div class="flex items-center gap-3 mb-8">
+                    <i data-lucide="users" class="w-8 h-8 text-accent"></i>
+                    <h2 class="text-3xl font-bold text-white">Stakeholder Engagement</h2>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                    <div class="bg-primary-light p-8 rounded-2xl border border-gray-800">
+                        <h3 class="text-2xl font-bold text-white mb-4">Expert Consultation</h3>
+                        <div class="space-y-6">
+                            <div class="flex items-start gap-4">
+                                <div class="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i data-lucide="graduation-cap" class="w-6 h-6 text-accent"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-bold text-white mb-2">Academic Experts</h4>
+                                    <p class="text-gray-300">Regular consultations with synthetic biology professors and researchers for scientific guidance and methodology validation.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i data-lucide="shield" class="w-6 h-6 text-accent"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-bold text-white mb-2">Biosafety Experts</h4>
+                                    <p class="text-gray-300">Review of dual-use potential and safety protocols with institutional biosafety committee members.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i data-lucide="briefcase" class="w-6 h-6 text-accent"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-bold text-white mb-2">Industry Professionals</h4>
+                                    <p class="text-gray-300">Discussions with biotech companies about industrial applications and scalability considerations.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-primary-light p-8 rounded-2xl border border-gray-800">
+                        <h3 class="text-2xl font-bold text-white mb-4">Public Outreach Activities</h3>
+                        <div class="space-y-6">
+                            <div class="p-6 bg-primary rounded-xl border border-gray-700">
+                                <h4 class="text-lg font-bold text-white mb-2">Community Science Fair (June 2025)</h4>
+                                <p class="text-gray-300 mb-3">Public engagement event introducing synthetic biology concepts and our project to local community members.</p>
+                                <div class="flex items-center gap-2 text-sm text-gray-400">
+                                    <i data-lucide="users" class="w-4 h-4"></i>
+                                    <span>150+ participants</span>
+                                </div>
+                            </div>
+                            <div class="p-6 bg-primary rounded-xl border border-gray-700">
+                                <h4 class="text-lg font-bold text-white mb-2">School Workshops</h4>
+                                <p class="text-gray-300 mb-3">Interactive sessions with high school students to promote STEM education and synthetic biology awareness.</p>
+                                <div class="flex items-center gap-2 text-sm text-gray-400">
+                                    <i data-lucide="school" class="w-4 h-4"></i>
+                                    <span>3 local schools</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-primary-light p-8 rounded-2xl border border-accent/20">
+                    <h3 class="text-2xl font-bold text-white mb-6">Interdisciplinary Collaboration</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i data-lucide="dna" class="w-8 h-8 text-accent"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-white mb-2">Wet Lab Team</h4>
+                            <p class="text-gray-400">7 members focused on experimental design and execution</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i data-lucide="cpu" class="w-8 h-8 text-accent"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-white mb-2">Modeling Team</h4>
+                            <p class="text-gray-400">5 members handling computational modeling and data analysis</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i data-lucide="heart" class="w-8 h-8 text-accent"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-white mb-2">HP Team</h4>
+                            <p class="text-gray-400">7 members managing stakeholder engagement and ethics</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== 社区价值部分 ==================== -->
+            <section id="values" class="mb-20">
+                <div class="flex items-center gap-3 mb-8">
+                    <i data-lucide="heart" class="w-8 h-8 text-accent"></i>
+                    <h2 class="text-3xl font-bold text-white">Community Values & Impact</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-primary-light p-8 rounded-2xl border border-gray-800">
+                        <div class="flex items-center gap-3 mb-6">
+                            <i data-lucide="leaf" class="w-6 h-6 text-green-400"></i>
+                            <h3 class="text-2xl font-bold text-white">Environmental Value</h3>
+                        </div>
+                        <div class="space-y-4 text-gray-300">
+                            <p>
+                                <span class="font-bold text-green-400">Green Manufacturing:</span> Our platform enables more efficient protein production with reduced carbon footprint and resource consumption.
+                            </p>
+                            <p>
+                                <span class="font-bold text-green-400">Circular Biomanufacturing:</span> Designed for waste valorization and resource efficiency, contributing to sustainable industrial practices.
+                            </p>
+                            <p>
+                                <span class="font-bold text-green-400">Lower Environmental Impact:</span> Estimated 30-40% reduction in water usage and energy consumption compared to traditional methods.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-primary-light p-8 rounded-2xl border border-gray-800">
+                        <div class="flex items-center gap-3 mb-6">
+                            <i data-lucide="shield" class="w-6 h-6 text-blue-400"></i>
+                            <h3 class="text-2xl font-bold text-white">Social Value</h3>
+                        </div>
+                        <div class="space-y-4 text-gray-300">
+                            <p>
+                                <span class="font-bold text-blue-400">Medical Equity:</span> By reducing production costs for therapeutic proteins by 30-50%, we improve accessibility to essential biopharmaceuticals.
+                            </p>
+                            <p>
+                                <span class="font-bold text-blue-400">Cost Reduction:</span> Enables more affordable production of complex proteins for developing regions and underserved populations.
+                            </p>
+                            <p>
+                                <span class="font-bold text-blue-400">Public Health Impact:</span> Potential to lower costs of vaccines, therapeutic antibodies, and diagnostic proteins.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-primary-light p-8 rounded-2xl border border-gray-800">
+                        <div class="flex items-center gap-3 mb-6">
+                            <i data-lucide="scale" class="w-6 h-6 text-purple-400"></i>
+                            <h3 class="text-2xl font-bold text-white">Ethical Value</h3>
+                        </div>
+                        <div class="space-y-4 text-gray-300">
+                            <p>
+                                <span class="font-bold text-purple-400">Responsible Innovation:</span> Continuous evaluation of ethical implications throughout project development.
+                            </p>
+                            <p>
+                                <span class="font-bold text-purple-400">Public Engagement:</span> Transparent communication about research goals and potential applications.
+                            </p>
+                            <p>
+                                <span class="font-bold text-purple-400">Dual-Use Assessment:</span> Proactive evaluation and mitigation of potential misuse scenarios.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-primary-light p-8 rounded-2xl border border-gray-800">
+                        <div class="flex items-center gap-3 mb-6">
+                            <i data-lucide="book-open" class="w-6 h-6 text-accent"></i>
+                            <h3 class="text-2xl font-bold text-white">Scientific Value</h3>
+                        </div>
+                        <div class="space-y-4 text-gray-300">
+                            <p>
+                                <span class="font-bold text-accent">Needs-Driven Design:</span> Research addresses real-world challenges in protein production identified through stakeholder engagement.
+                            </p>
+                            <p>
+                                <span class="font-bold text-accent">Educational Resource:</span> Provides clear understanding of translation-folding coupling for future iGEM teams and researchers.
+                            </p>
+                            <p>
+                                <span class="font-bold text-accent">Open Science:</span> All findings and protocols shared openly to advance the synthetic biology community.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== 伦理考虑部分 ==================== -->
+            <section id="ethics" class="mb-20">
+                <div class="flex items-center gap-3 mb-8">
+                    <i data-lucide="scale" class="w-8 h-8 text-accent"></i>
+                    <h2 class="text-3xl font-bold text-white">Ethical Considerations</h2>
+                </div>
+
+                <div class="bg-primary-light p-8 rounded-2xl border border-gray-800 mb-8">
+                    <h3 class="text-2xl font-bold text-white mb-6">Dual-Use Potential Assessment</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="p-6 bg-primary rounded-xl border border-gray-700">
+                            <h4 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
+                                <i data-lucide="shield-alert" class="w-5 h-5 text-yellow-400"></i>
+                                Risk Assessment Framework
+                            </h4>
+                            <ul class="space-y-2 text-gray-300">
+                                <li class="flex items-start gap-2">
+                                    <i data-lucide="check-circle" class="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0"></i>
+                                    <span>Consultation with biosafety experts to define dual-use boundaries</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i data-lucide="check-circle" class="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0"></i>
+                                    <span>Focus on protein production optimization rather than novel toxin creation</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i data-lucide="check-circle" class="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0"></i>
+                                    <span>Transparent documentation of research limitations and safety measures</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="p-6 bg-primary rounded-xl border border-gray-700">
+                            <h4 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
+                                <i data-lucide="target" class="w-5 h-5 text-accent"></i>
+                                Application Scope Definition
+                            </h4>
+                            <div class="space-y-3 text-gray-300">
+                                <p>
+                                    The DogmaOS platform is specifically designed for improving recombinant protein production efficiency in <span class="font-bold">E. coli</span>.
+                                </p>
+                                <p>
+                                    Primary applications include production of therapeutic proteins, industrial enzymes, and research reagents - all for peaceful, beneficial purposes.
+                                </p>
+                                <p>
+                                    Platform capabilities are focused on <span class="font-bold">"translation pace – periplasmic folding"</span> optimization rather than creating novel biological functions.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-primary-light p-8 rounded-2xl border border-accent/20">
+                    <h3 class="text-2xl font-bold text-white mb-6">Equity & Accessibility Considerations</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="text-lg font-bold text-white mb-3">Cost-Effective Production</h4>
+                            <p class="text-gray-300 mb-4">
+                                By optimizing protein folding pathways and enhancing expression yields, the platform aims to substantially reduce production costs for high-value proteins, making essential biopharmaceuticals more accessible globally.
+                            </p>
+                            <div class="p-4 bg-primary rounded-lg">
+                                <div class="text-2xl font-bold text-accent mb-1">30-50%</div>
+                                <div class="text-gray-400 text-sm">Estimated cost reduction for therapeutic proteins</div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-lg font-bold text-white mb-3">Continuous Evaluation</h4>
+                            <p class="text-gray-300 mb-4">
+                                We maintain ongoing assessment of how our technology could impact different communities, with particular attention to ensuring benefits reach underserved populations and developing regions.
+                            </p>
+                            <div class="p-4 bg-primary rounded-lg">
+                                <div class="text-2xl font-bold text-accent mb-1">Quarterly</div>
+                                <div class="text-gray-400 text-sm">Ethical impact assessment reviews</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== 可持续性部分 ==================== -->
+            <section id="sustainability" class="mb-20">
+                <div class="flex items-center gap-3 mb-8">
+                    <i data-lucide="refresh-cw" class="w-8 h-8 text-accent"></i>
+                    <h2 class="text-3xl font-bold text-white">Sustainability Framework</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                    <div class="bg-primary-light p-8 rounded-2xl border border-gray-800">
+                        <h3 class="text-2xl font-bold text-white mb-4">Environmental Sustainability</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-3">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0"></i>
+                                <div>
+                                    <h4 class="font-bold text-white">Lower Footprint</h4>
+                                    <p class="text-gray-300 text-sm">Reduced energy and water consumption through optimized bioprocesses</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0"></i>
+                                <div>
+                                    <h4 class="font-bold text-white">Waste Valorization</h4>
+                                    <p class="text-gray-300 text-sm">Utilization of byproducts and minimization of industrial waste</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0"></i>
+                                <div>
+                                    <h4 class="font-bold text-white">Resource Efficiency</h4>
+                                    <p class="text-gray-300 text-sm">Higher protein yield per unit of raw materials and energy input</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-primary-light p-8 rounded-2xl border border-gray-800">
+                        <h3 class="text-2xl font-bold text-white mb-4">Systemic Sustainability</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-3">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0"></i>
+                                <div>
+                                    <h4 class="font-bold text-white">Modular Design</h4>
+                                    <p class="text-gray-300 text-sm">Platform components can be adapted for different applications</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0"></i>
+                                <div>
+                                    <h4 class="font-bold text-white">R&D Efficiency</h4>
+                                    <p class="text-gray-300 text-sm">Reduced development time and costs for new protein products</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0"></i>
+                                <div>
+                                    <h4 class="font-bold text-white">Knowledge Transfer</h4>
+                                    <p class="text-gray-300 text-sm">Open sharing of protocols and findings with scientific community</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-primary-light p-8 rounded-2xl border border-accent/20">
+                    <h3 class="text-2xl font-bold text-white mb-6">Responsible Innovation Paradigm</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="text-center">
+                            <div class="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i data-lucide="eye" class="w-6 h-6 text-accent"></i>
+                            </div>
+                            <h4 class="font-bold text-white mb-2">Anticipation</h4>
+                            <p class="text-gray-400 text-sm">Proactive identification of potential impacts and risks</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i data-lucide="message-circle" class="w-6 h-6 text-accent"></i>
+                            </div>
+                            <h4 class="font-bold text-white mb-2">Reflection</h4>
+                            <p class="text-gray-400 text-sm">Continuous evaluation of values and assumptions</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i data-lucide="users" class="w-6 h-6 text-accent"></i>
+                            </div>
+                            <h4 class="font-bold text-white mb-2">Engagement</h4>
+                            <p class="text-gray-400 text-sm">Inclusive dialogue with diverse stakeholders</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 pt-6 border-t border-gray-700">
+                        <p class="text-gray-300 text-center">
+                            This closed-loop approach ensures that scientific advancement proceeds in harmony with societal values, environmental stewardship, and ethical principles.
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- ==================== Footer (统一为首页样式) ==================== -->
+    <footer class="bg-gradient-to-br from-primary-light/50 to-primary/50 border-t border-accent/10 pt-12 pb-8 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
+                <!-- 项目简介 -->
+                <div class="space-y-4">
+                    <div>
+                        <span class="text-2xl font-bold tracking-widest text-white">
+                            Dogma<span class="text-accent">OS</span>
+                        </span>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        An integrated platform for reprogramming prokaryotic protein expression via codon engineering and translation kinetics control.
+                    </p>
+                </div>
+
+                <!-- 导航链接 -->
+                <div>
+                    <h3 class="text-lg font-bold text-accent mb-5">Explore</h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <a href="project.html" class="text-gray-400 hover:text-accent transition-colors text-sm">Project</a>
+                        <a href="wetlab.html" class="text-gray-400 hover:text-accent transition-colors text-sm">Wetlab</a>
+                        <a href="hp.html" class="text-gray-400 hover:text-accent transition-colors text-sm">Human Practices</a>
+                        <a href="team.html" class="text-gray-400 hover:text-accent transition-colors text-sm">Team</a>
+                        <a href="award.html" class="text-gray-400 hover:text-accent transition-colors text-sm">Awards</a>
+                    </div>
+                </div>
+
+                <!-- 联系信息 -->
+                <div>
+                    <h3 class="text-lg font-bold text-accent mb-5">Connect</h3>
+                    <div class="space-y-3 text-sm text-gray-400">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-accent/70"></i>
+                            <span>Xi'an Jiaotong-Liverpool University</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="mail" class="w-4 h-4 text-accent/70"></i>
+                            <span>contact@dogmaos-igem.org</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 mt-6">
+                        <a href="#" class="w-10 h-10 rounded-full bg-accent/5 flex items-center justify-center text-accent hover:bg-accent hover:text-primary transition-all duration-300">
+                            <i data-lucide="github" class="w-4 h-4"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-accent/5 flex items-center justify-center text-accent hover:bg-accent hover:text-primary transition-all duration-300">
+                            <i data-lucide="twitter" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 版权和分割线 -->
+            <div class="pt-6 border-t border-white/10">
+                <div class="text-center">
+                    <p class="text-gray-500 text-sm">
+                        © 2025 DogmaOS iGEM Team. Content licensed under Creative Commons Attribution 4.0
+                    </p>
+                    <p class="text-gray-600 text-xs mt-2">
+                        iGEM Competition 2025 | XJTLU-Science-China
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== 脚本加载 ==================== -->
+    <script src="js/common.js"></script>
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        lucide.createIcons();
+    </script>
+</body>
+</html>

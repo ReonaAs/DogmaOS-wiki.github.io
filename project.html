@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project | DogmaOS iGEM 2025</title>
+    
+    <!-- ==================== 样式配置 ==================== -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#0a0d1a',
+              'primary-light': '#1a2340',
+              accent: '#00d9ff',
+              'accent-glow': '#4dffff',
+              success: '#00e676',
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              mono: ['Fira Code', 'monospace'],
+            },
+          },
+        },
+      }
+    </script>
+    
+    <!-- ==================== 外部资源 ==================== -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        .cycle-card {
+            position: relative;
+            overflow: hidden;
+        }
+        .cycle-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--tw-gradient-stops));
+        }
+        .cycle-1::before {
+            background: linear-gradient(90deg, #00d9ff, #0099ff);
+        }
+        .cycle-2::before {
+            background: linear-gradient(90deg, #00ff88, #00d9ff);
+        }
+        .cycle-3::before {
+            background: linear-gradient(90deg, #aa00ff, #00d9ff);
+        }
+        .section-anchor {
+            scroll-margin-top: 100px;
+        }
+
+        /* 增强的文本发光效果 */
+        .text-glow {
+            text-shadow: 0 0 20px rgba(0, 217, 255, 0.5),
+                         0 0 40px rgba(0, 217, 255, 0.3),
+                         0 0 60px rgba(0, 217, 255, 0.1);
+            animation: textPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes textPulse {
+            0%, 100% {
+                text-shadow: 0 0 20px rgba(0, 217, 255, 0.5),
+                             0 0 40px rgba(0, 217, 255, 0.3),
+                             0 0 60px rgba(0, 217, 255, 0.1);
+            }
+            50% {
+                text-shadow: 0 0 30px rgba(0, 217, 255, 0.7),
+                             0 0 50px rgba(0, 217, 255, 0.4),
+                             0 0 80px rgba(0, 217, 255, 0.2);
+            }
+        }
+
+        /* 平滑的页面标题动画 */
+        .fade-in {
+            animation: fadeInDown 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 工程周期卡片增强 */
+        .cycle-card {
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .cycle-card:hover {
+            border-color: rgba(0, 217, 255, 0.6);
+            box-shadow: 0 0 30px rgba(0, 217, 255, 0.15);
+        }
+
+        /* 卡片内部元素动画 */
+        .cycle-card h4,
+        .cycle-card p {
+            transition: color 0.3s ease;
+        }
+
+        .cycle-card:hover h4 {
+            color: #4dffff;
+        }
+
+        /* 步骤指示器高级样式 */
+        .step-dot {
+            box-shadow: 0 0 15px rgba(0, 217, 255, 0.5);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .step-dot:hover {
+            box-shadow: 0 0 30px rgba(0, 217, 255, 0.8);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 640px) {
+            .text-glow {
+                font-size: 2rem;
+            }
+            
+            .cycle-card {
+                padding: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-primary text-gray-200">
+
+    <!-- ==================== 导航栏 ==================== -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-primary/90 backdrop-blur-md border-b border-accent/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <a href="index.html" class="flex-shrink-0 cursor-pointer group">
+                    <span class="text-2xl font-bold tracking-widest text-white group-hover:text-accent transition-colors">
+                        Dogma<span class="text-accent">OS</span>
+                    </span>
+                </a>
+
+                <!-- 桌面菜单 -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="index.html" class="nav-link">Home</a>
+                        
+                        <!-- Project 下拉菜单（当前页面高亮） -->
+                        <div class="relative group dropdown-container">
+                            <a href="project.html" class="nav-link flex items-center gap-1 text-accent">Project <i data-lucide="chevron-down" class="w-4 h-4"></i></a>
+                            <div class="dropdown-menu absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-primary-light border border-accent/20 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                                <a href="#description" class="block px-4 py-2 text-sm hover:text-accent hover:bg-white/5">Description</a>
+                                <a href="#engineering" class="block px-4 py-2 text-sm hover:text-accent hover:bg-white/5">Engineering</a>
+                                <a href="#safety" class="block px-4 py-2 text-sm hover:text-accent hover:bg-white/5">Safety</a>
+                            </div>
+                        </div>
+
+                        <!-- Wetlab 下拉菜单 -->
+                        <div class="relative group dropdown-container">
+                            <a href="#" class="nav-link flex items-center gap-1">Wetlab <i data-lucide="chevron-down" class="w-4 h-4"></i></a>
+                            <div class="dropdown-menu absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-primary-light border border-accent/20 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                                <a href="wetlab.html#experiments" class="block px-4 py-2 text-sm hover:text-accent hover:bg-white/5">Experiments</a>
+                                <a href="wetlab.html#results" class="block px-4 py-2 text-sm hover:text-accent hover:bg-white/5">Results</a>
+                                <a href="wetlab.html#parts" class="block px-4 py-2 text-sm hover:text-accent hover:bg-white/5">Parts</a>
+                            </div>
+                        </div>
+
+                        <!-- Human Practices 页面 -->
+                        <a href="hp.html" class="nav-link">Human Practices</a>
+
+                        <!-- Team 下拉菜单 -->
+                        <div class="relative group dropdown-container">
+                            <a href="team.html#members" class="nav-link flex items-center gap-1">Team <i data-lucide="chevron-down" class="w-4 h-4"></i></a>
+                            <div class="dropdown-menu absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-primary-light border border-accent/20 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                                <a href="team.html#members" class="block px-4 py-2 text-sm hover:text-accent hover:bg-white/5">Members</a>
+                                <a href="team.html#timeline" class="block px-4 py-2 text-sm hover:text-accent hover:bg-white/5">Timeline</a>
+                                <a href="team.html#attributions" class="block px-4 py-2 text-sm hover:text-accent hover:bg-white/5">Attributions</a>
+                            </div>
+                        </div>
+
+                        <!-- Award 页面 -->
+                        <a href="award.html" class="nav-link">Awards</a>
+                    </div>
+                </div>
+
+                <!-- 移动端菜单按钮 -->
+                <div class="-mr-2 flex md:hidden">
+                    <button id="mobile-menu-btn" class="p-2 rounded-md text-gray-400 hover:text-white hover:bg-primary-light">
+                        <i data-lucide="menu"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 移动端菜单 -->
+        <div id="mobile-menu" class="hidden md:hidden bg-primary border-b border-accent/20">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-accent">Home</a>
+                <a href="#description" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-accent">Description</a>
+                <a href="#engineering" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-accent">Engineering</a>
+                <a href="#safety" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-accent">Safety</a>
+                <a href="wetlab.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-accent">Wetlab</a>
+                <a href="hp.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-accent">Human Practices</a>
+                <a href="team.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-accent">Team</a>
+                <a href="award.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-accent">Awards</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==================== 主容器 ==================== -->
+    <div class="min-h-screen bg-primary pt-24 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- 页面标题 -->
+            <div class="text-center mb-12 fade-in">
+                <div class="inline-block mb-4 px-4 py-2 rounded-full bg-accent/10 border border-accent/30">
+                    <span class="text-sm font-mono text-accent">SYNTHETIC BIOLOGY</span>
+                </div>
+                <h1 class="text-5xl font-bold text-white mb-6 text-glow">DogmaOS Project</h1>
+                <p class="text-gray-400 max-w-3xl mx-auto text-lg leading-relaxed">
+                    An integrated platform for <span class="text-accent">reprogramming prokaryotic protein expression</span> via codon engineering and translation kinetics control
+                </p>
+            </div>
+
+            <!-- 页面导航 -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12 border-b border-gray-800 pb-8">
+                <a href="#description" class="group px-6 py-2 rounded-full border border-gray-700 hover:border-accent hover:text-accent transition-all duration-300 flex items-center gap-2">
+                    <i data-lucide="book" class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    Description
+                </a>
+                <a href="#engineering" class="group px-6 py-2 rounded-full border border-gray-700 hover:border-accent hover:text-accent transition-all duration-300 flex items-center gap-2">
+                    <i data-lucide="repeat" class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    Engineering Cycles
+                </a>
+                <a href="#safety" class="group px-6 py-2 rounded-full border border-gray-700 hover:border-accent hover:text-accent transition-all duration-300 flex items-center gap-2">
+                    <i data-lucide="shield" class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    Safety
+                </a>
+            </div>
+
+            <!-- ==================== 项目描述部分 ==================== -->
+            <section id="description" class="section-anchor mb-20 scroll-mt-24">
+                <div class="flex items-center gap-3 mb-8">
+                    <i data-lucide="book-open" class="w-8 h-8 text-accent"></i>
+                    <h2 class="text-3xl font-bold text-white">Project Description</h2>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                    <div class="bg-primary-light p-8 rounded-2xl border border-gray-800 hover:border-accent/50 card-lift group">
+                        <div class="flex items-start gap-4 mb-4">
+                            <div class="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0 group-hover:bg-accent/30 transition-colors">
+                                <i data-lucide="microscope" class="w-5 h-5 text-accent"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white">Research Background</h3>
+                        </div>
+                        <div class="space-y-4 text-gray-300 border-l-2 border-accent/20 pl-4">
+                            <div class="hover:text-gray-100 transition-colors">
+                                <span class="inline-block mb-2 text-xs font-mono text-accent">• BIOTECH CHALLENGE</span>
+                                <p class="leading-relaxed">
+                                    Escherichia coli is one of the most widely used organisms for recombinant protein production, responsible for approximately one-third of approved therapeutic recombinant products.
+                                </p>
+                            </div>
+                            <div class="hover:text-gray-100 transition-colors">
+                                <span class="inline-block mb-2 text-xs font-mono text-accent">• TRANSLATION RHYTHM</span>
+                                <p class="leading-relaxed">
+                                    Protein translation in E. coli does not proceed at a uniform rate. Translation elongation speed is strongly influenced by codon identity and tRNA abundance, creating a characteristic "translation rhythm" that critically affects protein yield and co-translational folding.
+                                </p>
+                            </div>
+                            <div class="hover:text-gray-100 transition-colors">
+                                <span class="inline-block mb-2 text-xs font-mono text-accent">• REDOX LIMITATION</span>
+                                <p class="leading-relaxed">
+                                    The intrinsically reducing nature of the E. coli cytoplasm presents a major limitation for proteins requiring disulfide bonds for proper folding and function.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-primary-light p-8 rounded-2xl border border-gray-800 hover:border-accent/50 card-lift group">
+                        <div class="flex items-start gap-4 mb-4">
+                            <div class="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0 group-hover:bg-accent/30 transition-colors">
+                                <i data-lucide="lightbulb" class="w-5 h-5 text-accent"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white">Project Rationale</h3>
+                        </div>
+                        <div class="space-y-4 text-gray-300 border-l-2 border-accent/20 pl-4">
+                            <div class="hover:text-gray-100 transition-colors">
+                                <span class="inline-block mb-2 text-xs font-mono text-accent">• EXISTING LIMITATIONS</span>
+                                <p class="leading-relaxed">
+                                    Existing oxidative chassis (Origami, SHuffle) modify the global redox environment but lack precise control over translation kinetics and co-translational folding. They often severely perturb cellular homeostasis, leading to reduced growth rates and poor stability.
+                                </p>
+                            </div>
+                            <div class="hover:text-gray-100 transition-colors">
+                                <span class="inline-block mb-2 text-xs font-mono text-accent">• DOGMAOS SOLUTION</span>
+                                <p class="leading-relaxed">
+                                    DogmaOS addresses these limitations by establishing a systematic strategy for reprogramming protein expression through translation kinetics engineering, enabling production of proteins with stringent requirements for both translation dynamics and disulfide bond formation.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 工作流程图 - Interactive mini-game + steps -->
+                <div class="mb-12">
+                    <h3 class="text-2xl font-bold text-white mb-6 text-center">Project Workflow</h3>
+                    <div class="relative bg-primary-light p-8 rounded-2xl border border-gray-800">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                            <!-- Interactive left area: canvas + slider -->
+                            <div class="p-6 bg-primary rounded-xl border border-gray-700 flex flex-col items-center justify-center">
+                                <div class="protein-game w-full h-72 md:h-96 relative rounded-lg overflow-hidden bg-gradient-to-br from-primary/60 to-primary-light/40 flex items-center justify-center">
+                                    <canvas class="protein-canvas" style="width:100%; height:100%; display:block;"></canvas>
+                                    <div class="foldMessage absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 transition-opacity">
+                                        <div class="px-4 py-2 bg-accent/90 text-primary rounded-full text-sm font-bold">Folded Successfully!</div>
+                                    </div>
+                                </div>
+                                <div class="w-full mt-4">
+                                    <label class="text-sm text-gray-400 mb-2 inline-block">Translation Rate</label>
+                                    <input class="translation-rate w-full mt-2" type="range" min="0" max="100" value="30">
+                                    <div class="flex items-center justify-between text-xs text-gray-500 mt-2">
+                                        <span>Slow</span>
+                                        <span class="font-mono text-accent">Optimized</span>
+                                        <span>Fast</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right area: steps preserved -->
+                            <div class="space-y-6">
+                                <div class="cycle-flow-item group relative">
+                                    <div class="text-center md:text-left">
+                                        <div class="inline-block mb-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/30">
+                                            <span class="text-xs font-mono text-accent">STEP 1</span>
+                                        </div>
+                                        <h4 class="text-xl font-bold text-white mb-2">Translation Kinetics</h4>
+                                        <p class="text-gray-400 leading-relaxed">Control codon-tRNA interactions to modulate translation speed</p>
+                                    </div>
+                                </div>
+
+                                <div class="cycle-flow-item group relative">
+                                    <div class="text-center md:text-left">
+                                        <div class="inline-block mb-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/30">
+                                            <span class="text-xs font-mono text-accent">STEP 2</span>
+                                        </div>
+                                        <h4 class="text-xl font-bold text-white mb-2">Subcellular Targeting</h4>
+                                        <p class="text-gray-400 leading-relaxed">Direct proteins to oxidizing periplasmic environment</p>
+                                    </div>
+                                </div>
+
+                                <div class="cycle-flow-item group relative">
+                                    <div class="text-center md:text-left">
+                                        <div class="inline-block mb-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/30">
+                                            <span class="text-xs font-mono text-accent">STEP 3</span>
+                                        </div>
+                                        <h4 class="text-xl font-bold text-white mb-2">Complex Protein Expression</h4>
+                                        <p class="text-gray-400 leading-relaxed">Validate platform with multi-disulfide proteins</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== 工程周期部分 ==================== -->
+            <section id="engineering" class="section-anchor mb-20 scroll-mt-24">
+                <div class="flex items-center gap-3 mb-8">
+                    <i data-lucide="repeat" class="w-8 h-8 text-accent"></i>
+                    <h2 class="text-3xl font-bold text-white">Engineering Cycles</h2>
+                    <div class="ml-4 inline-block px-3 py-1 rounded-full bg-accent/10 border border-accent/30">
+                        <span class="text-xs font-mono text-accent">3 STAGES</span>
+                    </div>
+                </div>
+
+                <!-- 周期概览 -->
+                <div class="mb-12 p-6 bg-primary-light rounded-2xl border border-gray-800">
+                    <div class="flex items-center justify-between flex-wrap gap-4">
+                        <div class="flex items-center gap-4">
+                            <div class="text-center">
+                                <div class="inline-block w-12 h-12 rounded-full bg-accent/20 border-2 border-accent flex items-center justify-center">
+                                    <span class="text-xs font-bold text-accent">✓</span>
+                                </div>
+                                <p class="text-xs text-gray-400 mt-2">Stage 1</p>
+                            </div>
+                            <div class="hidden sm:block h-1 w-12 bg-gradient-to-r from-accent to-transparent"></div>
+                            <div class="text-center">
+                                <div class="inline-block w-12 h-12 rounded-full bg-accent/20 border-2 border-accent flex items-center justify-center">
+                                    <span class="text-xs font-bold text-accent">✓</span>
+                                </div>
+                                <p class="text-xs text-gray-400 mt-2">Stage 2</p>
+                            </div>
+                            <div class="hidden sm:block h-1 w-12 bg-gradient-to-r from-accent to-transparent"></div>
+                            <div class="text-center">
+                                <div class="inline-block w-12 h-12 rounded-full bg-accent/20 border-2 border-accent/60 flex items-center justify-center">
+                                    <span class="text-xs text-accent/60">3</span>
+                                </div>
+                                <p class="text-xs text-gray-400 mt-2">Stage 3</p>
+                            </div>
+                        </div>
+                        <span class="text-sm text-gray-400">Progress: 2/3 Complete</span>
+                    </div>
+                </div>
+
+                <!-- Cycle 1 -->
+                <div class="cycle-card cycle-1 bg-primary-light p-8 rounded-2xl border border-gray-800 mb-12 card-lift border-glow">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
+                        <div>
+                            <div class="inline-flex items-center gap-2 text-accent font-mono mb-2">
+                                <span class="text-xs font-bold tracking-widest">CYCLE 1</span>
+                                <i data-lucide="dna" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white">tRNA-Abundance-Controllable E. coli Chassis</h3>
+                        </div>
+                        <div class="flex items-center gap-3 md:flex-col md:items-end">
+                            <span class="text-5xl font-bold text-accent/20">01</span>
+                            <div class="inline-block px-4 py-2 rounded-full bg-accent/10 border border-accent/30">
+                                <span class="text-sm font-mono text-accent">Foundation Stage</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 进度指示 -->
+                    <div class="mb-8 p-4 bg-primary rounded-lg border border-accent/10">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-mono text-accent">Design → Build → Test</span>
+                            <span class="text-xs text-gray-400">3/3 Complete</span>
+                        </div>
+                        <div class="flex gap-1">
+                            <div class="flex-1 h-2 bg-accent/20 rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-accent to-accent-glow rounded-full progress-bar"></div>
+                            </div>
+                            <div class="flex-1 h-2 bg-accent/20 rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-accent to-accent-glow rounded-full progress-bar" style="animation-delay: 0.2s;"></div>
+                            </div>
+                            <div class="flex-1 h-2 bg-accent/20 rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-accent to-accent-glow rounded-full progress-bar" style="animation-delay: 0.4s;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div class="p-6 bg-primary rounded-xl border border-gray-700 hover:border-accent/50 card-lift group">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center group-hover:bg-accent/30 transition-colors">
+                                    <i data-lucide="edit" class="w-4 h-4 text-accent"></i>
+                                </div>
+                                <h4 class="text-lg font-bold text-white">Design</h4>
+                            </div>
+                            <p class="text-gray-400 text-sm leading-relaxed">
+                                Engineering an E. coli chassis with controllable tRNA abundance for selected tRNA families (Arg/Leu/Gly). Systematic screening to avoid lethality while achieving tunable translation kinetics.
+                            </p>
+                        </div>
+                        <div class="p-6 bg-primary rounded-xl border border-gray-700 hover:border-accent/50 card-lift group" style="animation-delay: 0.1s;">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center group-hover:bg-accent/30 transition-colors">
+                                    <i data-lucide="hammer" class="w-4 h-4 text-accent"></i>
+                                </div>
+                                <h4 class="text-lg font-bold text-white">Build</h4>
+                            </div>
+                            <p class="text-gray-400 text-sm leading-relaxed">
+                                Using λ-Red homologous recombination and CRISPR-Cas9 for precise tRNA gene deletion/modification. Constructing tRNA-abundance-controllable strains with validated genomic modifications.
+                            </p>
+                        </div>
+                        <div class="p-6 bg-primary rounded-xl border border-gray-700 hover:border-accent/50 card-lift group" style="animation-delay: 0.2s;">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center group-hover:bg-accent/30 transition-colors">
+                                    <i data-lucide="test-tube" class="w-4 h-4 text-accent"></i>
+                                </div>
+                                <h4 class="text-lg font-bold text-white">Test</h4>
+                            </div>
+                            <p class="text-gray-400 text-sm leading-relaxed">
+                                tRNA abundance measurement via qRT-PCR/tRNA-seq. Growth curve analysis. Translation efficiency assays using codon-enriched reporter systems. Model validation and refinement.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="p-6 bg-gradient-to-r from-primary to-primary-light rounded-xl border border-accent/30 hover:border-accent/60 transition-colors">
+                        <div class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0 mt-1">
+                                <i data-lucide="lightbulb" class="w-4 h-4 text-accent"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-bold text-accent mb-2">Key Innovation</h4>
+                                <p class="text-gray-300">
+                                    Direct regulation of tRNA abundance provides an additional regulatory dimension beyond codon replacement, enabling fine-tuned control of translation kinetics without altering coding sequences.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cycle 2 -->
+                <div class="cycle-card cycle-2 bg-primary-light p-8 rounded-2xl border border-gray-800 mb-12 card-lift border-glow">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
+                        <div>
+                            <div class="inline-flex items-center gap-2 text-green-400 font-mono mb-2">
+                                <span class="text-xs font-bold tracking-widest">CYCLE 2</span>
+                                <i data-lucide="arrow-right-left" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white">Signal Peptide Optimization & Disulfide Bond Formation</h3>
+                        </div>
+                        <div class="flex items-center gap-3 md:flex-col md:items-end">
+                            <span class="text-5xl font-bold text-green-400/20">02</span>
+                            <div class="inline-block px-4 py-2 rounded-full bg-green-400/10 border border-green-400/30">
+                                <span class="text-sm font-mono text-green-400">Optimization Stage</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 进度指示 -->
+                    <div class="mb-8 p-4 bg-primary rounded-lg border border-green-400/10">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-mono text-green-400">Design → Build → Test</span>
+                            <span class="text-xs text-gray-400">3/3 Complete</span>
+                        </div>
+                        <div class="flex gap-1">
+                            <div class="flex-1 h-2 bg-green-400/20 rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-green-400 to-success rounded-full progress-bar"></div>
+                            </div>
+                            <div class="flex-1 h-2 bg-green-400/20 rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-green-400 to-success rounded-full progress-bar" style="animation-delay: 0.2s;"></div>
+                            </div>
+                            <div class="flex-1 h-2 bg-green-400/20 rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-green-400 to-success rounded-full progress-bar" style="animation-delay: 0.4s;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                        <div class="p-6 bg-primary rounded-xl border border-gray-700 hover:border-green-400/50 card-lift group">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-8 h-8 rounded-full bg-green-400/20 flex items-center justify-center group-hover:bg-green-400/30 transition-colors">
+                                    <i data-lucide="layout" class="w-4 h-4 text-green-400"></i>
+                                </div>
+                                <h4 class="text-xl font-bold text-white">Signal Peptide Engineering</h4>
+                            </div>
+                            <ul class="space-y-3 text-gray-300">
+                                <li class="flex items-start gap-2">
+                                    <div class="w-5 h-5 rounded-full bg-green-400/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <i data-lucide="check" class="w-3 h-3 text-green-400"></i>
+                                    </div>
+                                    <span class="text-sm">Screening of optimal signal peptide sequences using molecular simulations</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <div class="w-5 h-5 rounded-full bg-green-400/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <i data-lucide="check" class="w-3 h-3 text-green-400"></i>
+                                    </div>
+                                    <span class="text-sm">Regulation of signal peptide translation speed via synonymous codon substitution</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <div class="w-5 h-5 rounded-full bg-green-400/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <i data-lucide="check" class="w-3 h-3 text-green-400"></i>
+                                    </div>
+                                    <span class="text-sm">Optimization of Sec pathway-mediated periplasmic targeting</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="p-6 bg-primary rounded-xl border border-gray-700 hover:border-green-400/50 card-lift group">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-8 h-8 rounded-full bg-green-400/20 flex items-center justify-center group-hover:bg-green-400/30 transition-colors">
+                                    <i data-lucide="code" class="w-4 h-4 text-green-400"></i>
+                                </div>
+                                <h4 class="text-xl font-bold text-white">Disulfide Bond Analysis</h4>
+                            </div>
+                            <ul class="space-y-3 text-gray-300">
+                                <li class="flex items-start gap-2">
+                                    <div class="w-5 h-5 rounded-full bg-green-400/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <i data-lucide="check" class="w-3 h-3 text-green-400"></i>
+                                    </div>
+                                    <span class="text-sm">BPTI as model protein for disulfide bond formation studies</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <div class="w-5 h-5 rounded-full bg-green-400/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <i data-lucide="check" class="w-3 h-3 text-green-400"></i>
+                                    </div>
+                                    <span class="text-sm">Molecular dynamics simulations to analyze translation rhythm effects</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <div class="w-5 h-5 rounded-full bg-green-400/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <i data-lucide="check" class="w-3 h-3 text-green-400"></i>
+                                    </div>
+                                    <span class="text-sm">Synonymous codon variants for low/medium/high translation speeds</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="p-6 bg-gradient-to-r from-primary to-primary-light rounded-xl border border-green-400/30 hover:border-green-400/60 transition-colors">
+                        <div class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full bg-green-400/20 flex items-center justify-center flex-shrink-0 mt-1">
+                                <i data-lucide="zap" class="w-4 h-4 text-green-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-bold text-green-400 mb-2">Integration Strategy</h4>
+                                <p class="text-gray-300">
+                                    Combines translation kinetics control from Cycle 1 with the naturally oxidizing periplasmic environment, enabling coordinated optimization of protein folding across both temporal and spatial dimensions.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cycle 3 -->
+                <div class="cycle-card cycle-3 bg-primary-light p-8 rounded-2xl border border-gray-800 card-lift border-glow">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
+                        <div>
+                            <div class="inline-flex items-center gap-2 text-purple-400 font-mono mb-2">
+                                <span class="text-xs font-bold tracking-widest">CYCLE 3</span>
+                                <i data-lucide="flask-conical" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white">Complex Multi-Disulfide Protein Validation</h3>
+                        </div>
+                        <div class="flex items-center gap-3 md:flex-col md:items-end">
+                            <span class="text-5xl font-bold text-purple-400/20">03</span>
+                            <div class="inline-block px-4 py-2 rounded-full bg-purple-400/10 border border-purple-400/30">
+                                <span class="text-sm font-mono text-purple-400">Validation Stage</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 进度指示 -->
+                    <div class="mb-8 p-4 bg-primary rounded-lg border border-purple-400/10">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-mono text-purple-400">Complex Protein Testing</span>
+                            <span class="text-xs text-gray-400">In Progress</span>
+                        </div>
+                        <div class="flex gap-1">
+                            <div class="flex-1 h-2 bg-purple-400/20 rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-purple-400 to-purple-300 rounded-full progress-bar"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                        <div class="p-6 bg-primary rounded-xl border border-gray-700 hover:border-purple-400/50 card-lift group">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-8 h-8 rounded-full bg-purple-400/20 flex items-center justify-center group-hover:bg-purple-400/30 transition-colors">
+                                    <i data-lucide="microscope" class="w-4 h-4 text-purple-400"></i>
+                                </div>
+                                <h4 class="text-xl font-bold text-white">Scytovirin (SVN) Expression</h4>
+                            </div>
+                            <div class="space-y-4 text-gray-300">
+                                <div class="p-3 bg-primary-light rounded-lg border border-purple-400/20">
+                                    <p class="text-sm">
+                                        🔬 SVN is a naturally occurring antiviral protein from cyanobacteria containing <span class="font-bold text-purple-400">five disulfide bonds</span>, representing a structurally complex validation target.
+                                    </p>
+                                </div>
+                                <p class="text-sm leading-relaxed">
+                                    Each disulfide bond is tested with low/medium/high translation speed variants to identify stage- and position-dependent requirements.
+                                </p>
+                                <p class="text-sm leading-relaxed">
+                                    Final optimized SVN sequence integrates the best-performing translation rhythm strategies for each disulfide bond region.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="p-6 bg-primary rounded-xl border border-gray-700 hover:border-purple-400/50 card-lift group">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-8 h-8 rounded-full bg-purple-400/20 flex items-center justify-center group-hover:bg-purple-400/30 transition-colors">
+                                    <i data-lucide="beaker" class="w-4 h-4 text-purple-400"></i>
+                                </div>
+                                <h4 class="text-xl font-bold text-white">Validation Methods</h4>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="flex items-start gap-3 p-4 bg-primary-light rounded-lg border border-purple-400/20 hover:border-purple-400/40 transition-colors">
+                                    <div class="w-5 h-5 rounded-full bg-purple-400/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <i data-lucide="filter" class="w-3 h-3 text-purple-400"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="font-bold text-white text-sm">Native-PAGE</h5>
+                                        <p class="text-gray-400 text-xs mt-1">Qualitative detection of proper disulfide bond formation and folding</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-3 p-4 bg-primary-light rounded-lg border border-purple-400/20 hover:border-purple-400/40 transition-colors">
+                                    <div class="w-5 h-5 rounded-full bg-purple-400/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <i data-lucide="bar-chart" class="w-3 h-3 text-purple-400"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="font-bold text-white text-sm">ELISA Analysis</h5>
+                                        <p class="text-gray-400 text-xs mt-1">Quantitative measurement of functional activity and protein expression</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-6 bg-gradient-to-r from-primary to-primary-light rounded-xl border border-purple-400/30 hover:border-purple-400/60 transition-colors">
+                        <div class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full bg-purple-400/20 flex items-center justify-center flex-shrink-0 mt-1">
+                                <i data-lucide="crown" class="w-4 h-4 text-purple-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-bold text-purple-400 mb-2">Platform Scalability</h4>
+                                <p class="text-gray-300">
+                                    Successful expression of SVN with its complex five-disulfide-bond structure demonstrates the scalability of the DogmaOS platform for producing structurally demanding proteins, validating it as a generalizable strategy for multi-disulfide protein expression.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== 安全部分 ==================== -->
+            <section id="safety" class="section-anchor scroll-mt-24">
+                <div class="flex items-center gap-3 mb-8">
+                    <i data-lucide="shield" class="w-8 h-8 text-accent"></i>
+                    <h2 class="text-3xl font-bold text-white">Safety Considerations</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                    <div class="bg-primary-light p-8 rounded-2xl border border-gray-800 hover:border-accent/50 card-lift group">
+                        <div class="flex items-start gap-4 mb-4">
+                            <div class="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0 group-hover:bg-accent/30 transition-colors">
+                                <i data-lucide="check-circle" class="w-6 h-6 text-accent"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white">Biosafety Level 1 Compliance</h3>
+                        </div>
+                        <div class="space-y-4 text-gray-300">
+                            <p class="leading-relaxed">
+                                All experiments are conducted under Biosafety Level 1 (BSL-1) conditions using non-pathogenic Escherichia coli BL21 (DE3) strains.
+                            </p>
+                            <p class="leading-relaxed">
+                                Standard laboratory safety protocols are strictly followed, including proper waste disposal, sterilization procedures, and personal protective equipment (PPE) usage.
+                            </p>
+                            <p class="leading-relaxed">
+                                Regular safety training and equipment maintenance ensure a safe working environment for all team members.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-primary-light p-8 rounded-2xl border border-gray-800 hover:border-accent/50 card-lift group">
+                        <div class="flex items-start gap-4 mb-4">
+                            <div class="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0 group-hover:bg-accent/30 transition-colors">
+                                <i data-lucide="globe" class="w-6 h-6 text-accent"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white">Dual-Use Research Assessment</h3>
+                        </div>
+                        <div class="space-y-4 text-gray-300">
+                            <p class="leading-relaxed">
+                                The project has been reviewed for dual-use potential in consultation with biosafety experts. All research outputs are intended for peaceful applications in biotechnology and medicine.
+                            </p>
+                            <p class="leading-relaxed">
+                                The platform is designed specifically for improving recombinant protein production efficiency and has no direct weapons-related applications.
+                            </p>
+                            <p class="leading-relaxed">
+                                Open communication about research goals and responsible innovation practices are maintained throughout the project.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 p-8 bg-primary-light rounded-2xl border border-accent/20 hover:border-accent/40 transition-colors">
+                    <h3 class="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+                        <i data-lucide="zap-off" class="w-6 h-6 text-accent"></i>
+                        Proactive Safety Tools
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="p-6 bg-primary rounded-xl border border-gray-700 hover:border-accent/50 card-lift group text-center">
+                            <div class="w-14 h-14 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-accent/30 transition-colors">
+                                <i data-lucide="cpu" class="w-7 h-7 text-accent"></i>
+                            </div>
+                            <h4 class="font-bold text-white mb-2">Dynamic Translation Control</h4>
+                            <p class="text-gray-400 text-sm leading-relaxed">Precise regulation prevents protein aggregation and misfolding</p>
+                        </div>
+                        <div class="p-6 bg-primary rounded-xl border border-gray-700 hover:border-accent/50 card-lift group text-center">
+                            <div class="w-14 h-14 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-accent/30 transition-colors">
+                                <i data-lucide="git-merge" class="w-7 h-7 text-accent"></i>
+                            </div>
+                            <h4 class="font-bold text-white mb-2">Tri-Platform Integration</h4>
+                            <p class="text-gray-400 text-sm leading-relaxed">Modular design allows for controlled, stepwise optimization</p>
+                        </div>
+                        <div class="p-6 bg-primary rounded-xl border border-gray-700 hover:border-accent/50 card-lift group text-center">
+                            <div class="w-14 h-14 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-accent/30 transition-colors">
+                                <i data-lucide="refresh-cw" class="w-7 h-7 text-accent"></i>
+                            </div>
+                            <h4 class="font-bold text-white mb-2">Closed-Loop Design</h4>
+                            <p class="text-gray-400 text-sm leading-relaxed">Continuous feedback minimizes unintended consequences</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- ==================== 页脚（统一为首页样式） ==================== -->
+    <footer class="bg-gradient-to-br from-primary-light/50 to-primary/50 border-t border-accent/10 pt-12 pb-8 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
+                <!-- 项目简介 -->
+                <div class="space-y-4">
+                    <div>
+                        <span class="text-2xl font-bold tracking-widest text-white">
+                            Dogma<span class="text-accent">OS</span>
+                        </span>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        An integrated platform for reprogramming prokaryotic protein expression via codon engineering and translation kinetics control.
+                    </p>
+                </div>
+
+                <!-- 导航链接 -->
+                <div>
+                    <h3 class="text-lg font-bold text-accent mb-5">Explore</h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <a href="project.html" class="text-gray-400 hover:text-accent transition-colors text-sm">Project</a>
+                        <a href="wetlab.html" class="text-gray-400 hover:text-accent transition-colors text-sm">Wetlab</a>
+                        <a href="hp.html" class="text-gray-400 hover:text-accent transition-colors text-sm">Human Practices</a>
+                        <a href="team.html" class="text-gray-400 hover:text-accent transition-colors text-sm">Team</a>
+                        <a href="award.html" class="text-gray-400 hover:text-accent transition-colors text-sm">Awards</a>
+                    </div>
+                </div>
+
+                <!-- 联系信息 -->
+                <div>
+                    <h3 class="text-lg font-bold text-accent mb-5">Connect</h3>
+                    <div class="space-y-3 text-sm text-gray-400">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-accent/70"></i>
+                            <span>Xi'an Jiaotong-Liverpool University</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="mail" class="w-4 h-4 text-accent/70"></i>
+                            <span>contact@dogmaos-igem.org</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 mt-6">
+                        <a href="#" class="w-10 h-10 rounded-full bg-accent/5 flex items-center justify-center text-accent hover:bg-accent hover:text-primary transition-all duration-300">
+                            <i data-lucide="github" class="w-4 h-4"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-accent/5 flex items-center justify-center text-accent hover:bg-accent hover:text-primary transition-all duration-300">
+                            <i data-lucide="twitter" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 版权和分割线 -->
+            <div class="pt-6 border-t border-white/10">
+                <div class="text-center">
+                    <p class="text-gray-500 text-sm">
+                        © 2025 DogmaOS iGEM Team. Content licensed under Creative Commons Attribution 4.0
+                    </p>
+                    <p class="text-gray-600 text-xs mt-2">
+                        iGEM Competition 2025 | XJTLU-Science-China
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== 脚本加载 ==================== -->
+    <script src="js/common.js"></script>
+    <script>
+        // 平滑滚动到锚点
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // 初始化图标
+        lucide.createIcons();
+    </script>
+</body>
+</html>

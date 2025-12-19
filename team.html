@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team | DogmaOS iGEM 2025</title>
+    
+    <!-- ==================== 样式配置 ==================== -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#0a0d1a',
+              'primary-light': '#1a2340',
+              accent: '#00d9ff',
+              'accent-glow': '#4dffff',
+              success: '#00e676',
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              mono: ['Fira Code', 'monospace'],
+            },
+          },
+        },
+      }
+    </script>
+    
+    <!-- ==================== 外部资源 ==================== -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-primary text-gray-200">
+
+    <!-- ==================== 导航栏 ==================== -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-primary/90 backdrop-blur-md border-b border-accent/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <a href="index.html" class="flex-shrink-0 cursor-pointer group">
+                    <span class="text-2xl font-bold tracking-widest text-white group-hover:text-accent transition-colors">
+                        Dogma<span class="text-accent">OS</span>
+                    </span>
+                </a>
+
+                <!-- 桌面菜单 -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="index.html" class="nav-link">Home</a>
+                        
+                        <!-- Project 下拉菜单 -->
+                        <div class="relative group dropdown-container">
+                            <a href="project.html" class="nav-link flex items-center gap-1">Project <i data-lucide="chevron-down" class="w-4 h-4"></i></a>
+                            <div class="dropdown-menu absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-primary-light border border-accent/20 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                                <a href="project.html#description" class="block px-4 py-2 text-sm hover:text-accent hover:bg-white/5">Description</a>
+                                <a href="project.html#engineering" class="block px-4 py-2 text-sm hover:text-accent hover:bg-white/5">Engineering</a>
+                                <a href="project.html#safety" class="block px-4 py-2 text-sm hover:text-accent hover:bg-white/5">Safety</a>
+                            </div>
+                        </div>
+
+                        <!-- Wetlab 下拉菜单 -->
+                        <div class="relative group dropdown-container">
+                            <a href="wetlab.html" class="nav-link flex items-center gap-1">Wetlab <i data-lucide="chevron-down" class="w-4 h-4"></i></a>
+                            <div class="dropdown-menu absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-primary-light border border-accent/20 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                                <a href="wetlab.html#experiments" class="block px-4 py-2 text-sm hover:text-accent hover:bg-white/5">Experiments</a>
+                                <a href="wetlab.html#results" class="block px-4 py-2 text-sm hover:text-accent hover:bg-white/5">Results</a>
+                                <a href="wetlab.html#parts" class="block px-4 py-2 text-sm hover:text-accent hover:bg-white/5">Parts</a>
+                            </div>
+                        </div>
+
+                        <!-- Human Practices 页面 -->
+                        <a href="hp.html" class="nav-link">Human Practices</a>
+
+                        <!-- Team 下拉菜单（当前页面高亮） -->
+                        <div class="relative group dropdown-container">
+                            <a href="team.html" class="nav-link flex items-center gap-1 text-accent">Team <i data-lucide="chevron-down" class="w-4 h-4"></i></a>
+                            <div class="dropdown-menu absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-primary-light border border-accent/20 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                                <a href="#members" class="block px-4 py-2 text-sm hover:text-accent hover:bg-white/5">Members</a>
+                                <a href="#timeline" class="block px-4 py-2 text-sm hover:text-accent hover:bg-white/5">Timeline</a>
+                                <a href="#attributions" class="block px-4 py-2 text-sm hover:text-accent hover:bg-white/5">Attributions</a>
+                                <a href="#organization" class="block px-4 py-2 text-sm hover:text-accent hover:bg-white/5">Organization</a>
+                            </div>
+                        </div>
+
+                        <!-- Award 页面 -->
+                        <a href="award.html" class="nav-link">Awards</a>
+                    </div>
+                </div>
+
+                <!-- 移动端菜单按钮 -->
+                <div class="-mr-2 flex md:hidden">
+                    <button id="mobile-menu-btn" class="p-2 rounded-md text-gray-400 hover:text-white hover:bg-primary-light">
+                        <i data-lucide="menu"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 移动端菜单 -->
+        <div id="mobile-menu" class="hidden md:hidden bg-primary border-b border-accent/20">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-accent">Home</a>
+                <a href="project.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-accent">Project</a>
+                <a href="wetlab.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-accent">Wetlab</a>
+                <a href="hp.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-accent">Human Practices</a>
+                <a href="#members" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-accent">Team Members</a>
+                <a href="#organization" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-accent">Organization</a>
+                <a href="award.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-accent">Awards</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==================== 主容器 ==================== -->
+    <div class="min-h-screen bg-primary pt-24 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- 页面标题 -->
+            <div class="text-center mb-12 fade-in">
+                <h1 class="text-5xl font-bold text-white mb-6">Our Team</h1>
+                <p class="text-gray-400 max-w-3xl mx-auto text-lg">
+                    A multidisciplinary team working together to develop DogmaOS - an integrated platform for reprogramming prokaryotic protein expression
+                </p>
+            </div>
+
+            <!-- 页面导航 -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12 border-b border-gray-800 pb-8">
+                <a href="#members" class="px-6 py-2 rounded-full border border-gray-700 hover:border-accent hover:text-accent transition-colors">
+                    Members
+                </a>
+                <a href="#timeline" class="px-6 py-2 rounded-full border border-gray-700 hover:border-accent hover:text-accent transition-colors">
+                    Timeline
+                </a>
+                <a href="#organization" class="px-6 py-2 rounded-full border border-gray-700 hover:border-accent hover:text-accent transition-colors">
+                    Organization
+                </a>
+                <a href="#attributions" class="px-6 py-2 rounded-full border border-gray-700 hover:border-accent hover:text-accent transition-colors">
+                    Attributions
+                </a>
+            </div>
+
+            <!-- ==================== 团队组织结构 ==================== -->
+            <section id="organization" class="mb-20">
+                <div class="flex items-center gap-3 mb-8">
+                    <i data-lucide="git-branch" class="w-8 h-8 text-accent"></i>
+                    <h2 class="text-3xl font-bold text-white">Team Organization</h2>
+                </div>
+
+                <div class="bg-primary-light p-8 rounded-2xl border border-gray-800 mb-8">
+                    <h3 class="text-2xl font-bold text-white mb-6">Planned Contribution Allocation</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-accent mb-2">7</div>
+                            <div class="text-white font-bold mb-1">Wet Lab</div>
+                            <div class="text-gray-400 text-sm">Experimental design & execution</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-accent mb-2">5</div>
+                            <div class="text-white font-bold mb-1">Dry/Modeling</div>
+                            <div class="text-gray-400 text-sm">Computational modeling & analysis</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-accent mb-2">7</div>
+                            <div class="text-white font-bold mb-1">Human Practices</div>
+                            <div class="text-gray-400 text-sm">Stakeholder engagement & ethics</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-accent mb-2">2</div>
+                            <div class="text-white font-bold mb-1">Wiki Development</div>
+                            <div class="text-gray-400 text-sm">Website & documentation</div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6 bg-primary rounded-xl">
+                        <h4 class="text-lg font-bold text-white mb-3">Organizational Principles</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h5 class="font-bold text-accent mb-2 flex items-center gap-2">
+                                    <i data-lucide="check-circle" class="w-4 h-4"></i>
+                                    Clear Role Definition & Specialization
+                                </h5>
+                                <p class="text-gray-300 text-sm">Pre-project skills survey to align tasks with individual strengths (PCR expertise, Python coding, graphic design, science communication)</p>
+                            </div>
+                            <div>
+                                <h5 class="font-bold text-accent mb-2 flex items-center gap-2">
+                                    <i data-lucide="check-circle" class="w-4 h-4"></i>
+                                    Transparent Responsibility Matrix
+                                </h5>
+                                <p class="text-gray-300 text-sm">Visual RACI charts defining who is in charge of each part, who approves completed work, and who needs updates</p>
+                            </div>
+                            <div>
+                                <h5 class="font-bold text-accent mb-2 flex items-center gap-2">
+                                    <i data-lucide="check-circle" class="w-4 h-4"></i>
+                                    Balanced Workload & Flexibility
+                                </h5>
+                                <p class="text-gray-300 text-sm">Fair workload distribution with built-in flexibility for task swapping and peer support</p>
+                            </div>
+                            <div>
+                                <h5 class="font-bold text-accent mb-2 flex items-center gap-2">
+                                    <i data-lucide="check-circle" class="w-4 h-4"></i>
+                                    Documentation & Knowledge Sharing
+                                </h5>
+                                <p class="text-gray-300 text-sm">Shared drive/wiki with clear naming conventions and version control for all project documentation</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="bg-primary-light p-8 rounded-2xl border border-gray-800">
+                        <h3 class="text-2xl font-bold text-white mb-4">Collaboration Mechanisms</h3>
+                        <div class="space-y-4">
+                            <div class="p-4 bg-primary rounded-lg">
+                                <h4 class="font-bold text-white mb-2">Cross-Group Division of Labor</h4>
+                                <p class="text-gray-300 text-sm">Structured interdisciplinary task collaboration ensuring all teams work together efficiently</p>
+                            </div>
+                            <div class="p-4 bg-primary rounded-lg">
+                                <h4 class="font-bold text-white mb-2">New Member Integration</h4>
+                                <p class="text-gray-300 text-sm">Mentor-guided reporting system and paired workshops for rapid onboarding</p>
+                            </div>
+                            <div class="p-4 bg-primary rounded-lg">
+                                <h4 class="font-bold text-white mb-2">Regular Team Meetings</h4>
+                                <p class="text-gray-300 text-sm">Weekly team-wide meetings and pair-based learning framework in wet lab</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-primary-light p-8 rounded-2xl border border-gray-800">
+                        <h3 class="text-2xl font-bold text-white mb-4">Decision-Making Framework</h3>
+                        <div class="space-y-4">
+                            <div class="p-4 bg-primary rounded-lg">
+                                <h4 class="font-bold text-white mb-2">Brainstorming Workshops</h4>
+                                <p class="text-gray-300 text-sm">Regular team workshops for interdisciplinary discussions and creative problem-solving</p>
+                            </div>
+                            <div class="p-4 bg-primary rounded-lg">
+                                <h4 class="font-bold text-white mb-2">HP Involvement</h4>
+                                <p class="text-gray-300 text-sm">Human Practices team involvement in all wet lab decisions to ensure ethical considerations</p>
+                            </div>
+                            <div class="p-4 bg-primary rounded-lg">
+                                <h4 class="font-bold text-white mb-2">Advisory Role</h4>
+                                <p class="text-gray-300 text-sm">Former team members and experienced faculty provide guidance and oversight</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== 团队成员部分 ==================== -->
+            <section id="members" class="mb-20">
+                <div class="flex items-center gap-3 mb-8">
+                    <i data-lucide="users" class="w-8 h-8 text-accent"></i>
+                    <h2 class="text-3xl font-bold text-white">Team Members</h2>
+                </div>
+
+                <!-- 成员分类过滤按钮 -->
+                <div class="flex flex-wrap justify-center gap-3 mb-12" id="member-filters">
+                    <!-- 过滤按钮由JS注入 -->
+                </div>
+
+                <!-- 成员网格布局 -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="members-grid">
+                    <!-- 成员卡片由JS注入 -->
+                </div>
+            </section>
+
+            <!-- ==================== 项目时间线部分 ==================== -->
+            <section id="timeline" class="mb-20">
+                <div class="flex items-center gap-3 mb-8">
+                    <i data-lucide="calendar" class="w-8 h-8 text-accent"></i>
+                    <h2 class="text-3xl font-bold text-white">Project Timeline</h2>
+                </div>
+
+                <div class="relative border-l-2 border-accent/30 pl-8 space-y-12 my-8" id="timeline-container">
+                    <!-- 时间线项目由JS注入 -->
+                </div>
+            </section>
+
+            <!-- ==================== 致谢与支持部分 ==================== -->
+            <section id="attributions" class="mb-20">
+                <div class="flex items-center gap-3 mb-8">
+                    <i data-lucide="award" class="w-8 h-8 text-accent"></i>
+                    <h2 class="text-3xl font-bold text-white">Attributions & Support</h2>
+                </div>
+
+                <div class="grid gap-6" id="attributions-grid">
+                    <!-- 致谢项目由JS注入 -->
+                </div>
+                
+                <div class="mt-12 p-8 bg-primary-light rounded-2xl border border-accent/20">
+                    <h3 class="text-2xl font-bold text-white mb-6">Acknowledgments</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-lg font-bold text-white mb-3">Institutional Support</h4>
+                            <p class="text-gray-300 mb-4">
+                                We extend our sincere gratitude to Xi'an Jiaotong-Liverpool University for providing laboratory facilities, equipment, and funding support throughout this project.
+                            </p>
+                            <div class="flex items-center gap-2 text-sm text-gray-400">
+                                <i data-lucide="building" class="w-4 h-4"></i>
+                                <span>Department of Biological Sciences</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-400 mt-2">
+                                <i data-lucide="book" class="w-4 h-4"></i>
+                                <span>University Library Resources</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-bold text-white mb-3">Mentorship</h4>
+                            <p class="text-gray-300 mb-4">
+                                Special thanks to our academic mentors for their guidance, expertise, and continuous support in developing both the scientific and ethical dimensions of our project.
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-accent/5 border border-accent/20 text-accent rounded-full text-sm">Prof. Yongtao Zhu</span>
+                                <span class="px-3 py-1 bg-accent/5 border border-accent/20 text-accent rounded-full text-sm">Dr. Kevin C. Chan</span>
+                                <span class="px-3 py-1 bg-accent/5 border border-accent/20 text-accent rounded-full text-sm">Dr. Ziwen Xie</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- ==================== 页脚（统一为首页样式） ==================== -->
+    <footer class="bg-gradient-to-br from-primary-light/50 to-primary/50 border-t border-accent/10 pt-12 pb-8 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
+                <!-- 项目简介 -->
+                <div class="space-y-4">
+                    <div>
+                        <span class="text-2xl font-bold tracking-widest text-white">
+                            Dogma<span class="text-accent">OS</span>
+                        </span>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        An integrated platform for reprogramming prokaryotic protein expression via codon engineering and translation kinetics control.
+                    </p>
+                </div>
+
+                <!-- 导航链接 -->
+                <div>
+                    <h3 class="text-lg font-bold text-accent mb-5">Explore</h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <a href="project.html" class="text-gray-400 hover:text-accent transition-colors text-sm">Project</a>
+                        <a href="wetlab.html" class="text-gray-400 hover:text-accent transition-colors text-sm">Wetlab</a>
+                        <a href="hp.html" class="text-gray-400 hover:text-accent transition-colors text-sm">Human Practices</a>
+                        <a href="team.html" class="text-gray-400 hover:text-accent transition-colors text-sm">Team</a>
+                        <a href="award.html" class="text-gray-400 hover:text-accent transition-colors text-sm">Awards</a>
+                    </div>
+                </div>
+
+                <!-- 联系信息 -->
+                <div>
+                    <h3 class="text-lg font-bold text-accent mb-5">Connect</h3>
+                    <div class="space-y-3 text-sm text-gray-400">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-accent/70"></i>
+                            <span>Xi'an Jiaotong-Liverpool University</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="mail" class="w-4 h-4 text-accent/70"></i>
+                            <span>contact@dogmaos-igem.org</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 mt-6">
+                        <a href="#" class="w-10 h-10 rounded-full bg-accent/5 flex items-center justify-center text-accent hover:bg-accent hover:text-primary transition-all duration-300">
+                            <i data-lucide="github" class="w-4 h-4"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-accent/5 flex items-center justify-center text-accent hover:bg-accent hover:text-primary transition-all duration-300">
+                            <i data-lucide="twitter" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 版权和分割线 -->
+            <div class="pt-6 border-t border-white/10">
+                <div class="text-center">
+                    <p class="text-gray-500 text-sm">
+                        © 2025 DogmaOS iGEM Team. Content licensed under Creative Commons Attribution 4.0
+                    </p>
+                    <p class="text-gray-600 text-xs mt-2">
+                        iGEM Competition 2025 | XJTLU-Science-China
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== 脚本加载 ==================== -->
+    <script src="js/common.js"></script>
+    <script src="js/team.js"></script>
+    <script>
+        // 更新团队成员数据以反映项目文档
+        const MEMBERS_DATA = [
+            // 团队领导
+            { id: '1', name: 'Feiyu Yang', role: 'Student Team Leader', group: 'Wet Team', quote: 'Leading the integration of translation kinetics with protein folding engineering.', emoji: '🧬' },
+            
+            // 湿实验组成员
+            { id: '2', name: 'Fangying Xiang', role: 'Researcher', group: 'Wet Team', quote: 'Optimizing codon usage for controlled translation pausing.', emoji: '🔬' },
+            { id: '3', name: 'Ge Gao', role: 'Researcher', group: 'Wet Team', quote: 'Engineering tRNA abundance for translation rhythm control.', emoji: '🔬' },
+            { id: '5', name: 'Jiaxing Ye', role: 'Researcher', group: 'Wet Team', quote: 'Developing signal peptide optimization protocols.', emoji: '🔬' },
+            { id: '6', name: 'Jiaying Gu', role: 'Researcher', group: 'Wet Team', quote: 'Validating disulfide bond formation in periplasmic environment.', emoji: '🔬' },
+            { id: '8', name: 'Ruizhong Shu', role: 'Researcher', group: 'Wet Team', quote: 'Characterizing SVN expression and folding.', emoji: '🔬' },
+            { id: '15', name: 'Yinren Zhao', role: 'Researcher', group: 'Wet Team', quote: 'Implementing molecular biology techniques for tRNA engineering.', emoji: '🔬' },
+            
+            // 建模组成员
+            { id: '11', name: 'Siqi Liu', role: 'Computational Modeler', group: 'Model Team', quote: 'Simulating translation kinetics and protein folding dynamics.', emoji: '📊' },
+            { id: '14', name: 'Yiming Huang', role: 'Data Analyst', group: 'Model Team', quote: 'Analyzing tRNA abundance and codon usage patterns.', emoji: '📊' },
+            { id: '16', name: 'Yue Yu', role: 'Bioinformatician', group: 'Model Team', quote: 'Developing predictive models for translation rhythm optimization.', emoji: '📊' },
+            { id: '19', name: 'Zixu Xu', role: 'Molecular Dynamics Specialist', group: 'Model Team', quote: 'Simulating nascent polypeptide folding pathways.', emoji: '📊' },
+            { id: '4', name: 'Jiaqi Zheng', role: 'Systems Modeler', group: 'Model Team', quote: 'Integrating translation and folding models.', emoji: '📊' },
+            { id: '21', name: 'Ziming Sang', role: 'Data Analyst', group: 'Model Team', quote: 'Analyzing tRNA abundance and codon usage patterns.', emoji: '📊' },
+
+            // 人文实践组成员
+            { id: '9', name: 'Ruoxuan Chen', role: 'Stakeholder Engagement Lead', group: 'HP Team', quote: 'Connecting scientific innovation with societal needs.', emoji: '🤝' },
+            { id: '10', name: 'Shunran Wang', role: 'Ethics Coordinator', group: 'HP Team', quote: 'Ensuring responsible innovation practices.', emoji: '🤝' },
+            { id: '12', name: 'Tianle Yang', role: 'Public Outreach Coordinator', group: 'HP Team', quote: 'Engaging community through science education.', emoji: '🤝' },
+            { id: '13', name: 'Tingting Chen', role: 'Science Communication Specialist', group: 'HP Team', quote: 'Making complex biology accessible to all.', emoji: '🤝' },
+            { id: '17', name: 'Yuehan Hu', role: 'Sustainability Analyst', group: 'HP Team', quote: 'Assessing environmental and social impact.', emoji: '🤝' },
+            { id: '18', name: 'Zhenyayuan Cao', role: 'Industry Liaison', group: 'HP Team', quote: 'Bridging academic research with industrial applications.', emoji: '🤝' },
+            { id: '20', name: 'Ziyun Shi', role: 'Educational Program Developer', group: 'HP Team', quote: 'Creating STEM learning resources.', emoji: '🤝' },
+            
+            // 网络开发组成员
+            { id: '7', name: 'Keyi Zhao', role: 'Web Developer & Designer', group: 'Web Team', quote: 'Building the digital face of DogmaOS.', emoji: '💻' },
+            
+            // 导师(PIs)
+            { id: '22', name: 'Yongtao Zhu', role: 'Principal Investigator', group: 'PI', quote: 'Mentoring the next generation of synthetic biologists.', emoji: '👨‍🎓' },
+            { id: '23', name: 'Kevin C. Chan', role: 'Secondary Principal Investigator', group: 'PI', quote: 'Guiding computational and experimental integration.', emoji: '👨‍🎓' },
+            { id: '24', name: 'Ziwen Xie', role: 'Instructor', group: 'PI', quote: 'Supporting innovation in protein engineering.', emoji: '👨‍🎓' },
+        ];
+
+        // 更新项目活动时间线
+        const ACTIVITIES = [
+            { date: 'Jan 2025', title: 'Project Launch & Team Formation', description: 'Determined research direction, formed interdisciplinary teams, conducted skills assessment.', tags: ['Planning', 'Team Building'] },
+            { date: 'Feb 2025', title: 'Literature Review & Concept Development', description: 'Comprehensive review of translation kinetics, codon usage, and disulfide bond formation literature.', tags: ['Research', 'Design'] },
+            { date: 'Mar 2025', title: 'Cycle 1: tRNA Engineering Design', description: 'Designed tRNA-abundance-controllable E. coli chassis and codon optimization strategies.', tags: ['Engineering', 'Design'] },
+            { date: 'Apr 2025', title: 'Wet Lab Setup & Protocol Optimization', description: 'Established safety protocols, calibrated equipment, optimized molecular biology techniques.', tags: ['Safety', 'Wet Lab'] },
+            { date: 'May 2025', title: 'Cycle 2: Signal Peptide Optimization', description: 'Developed and tested signal peptide variants for periplasmic targeting.', tags: ['Engineering', 'Testing'] },
+            { date: 'Jun 2025', title: 'Public Engagement & Community Outreach', description: 'Organized community science fair and school workshops on synthetic biology.', tags: ['Education', 'Outreach'] },
+            { date: 'Jul 2025', title: 'Cycle 3: SVN Expression Validation', description: 'Expressed and characterized Scytovirin with complex disulfide bond architecture.', tags: ['Validation', 'Testing'] },
+            { date: 'Aug 2025', title: 'Data Analysis & Model Integration', description: 'Integrated experimental results with computational models for closed-loop optimization.', tags: ['Analysis', 'Modeling'] },
+            { date: 'Sep 2025', title: 'Documentation & Wiki Development', description: 'Comprehensive documentation of protocols, results, and project outcomes.', tags: ['Documentation', 'Web'] },
+            { date: 'Oct 2025', title: 'iGEM Competition Preparation', description: 'Finalizing presentation materials, wiki content, and award applications.', tags: ['Competition', 'Finalization'] }
+        ];
+
+        // 更新致谢数据
+        const ATTRIBUTIONS = [
+            { icon: 'graduation-cap', title: 'Xi\'an Jiaotong-Liverpool University', description: 'Provided laboratory facilities, equipment, and institutional support for the entire project duration.', contributors: ['Dept of Biological Sciences', 'Research Office', 'Library Resources'] },
+            { icon: 'users', title: 'Academic Mentors', description: 'Provided scientific guidance, methodological training, and continuous support throughout project development.', contributors: ['Prof. Yongtao Zhu', 'Dr. Kevin C. Chan', 'Dr. Ziwen Xie'] },
+            { icon: 'heart', title: 'Community Partners', description: 'Collaborated on public engagement activities and provided valuable feedback on project societal impact.', contributors: ['Local Schools', 'Community Centers', 'Science Museums'] },
+            { icon: 'factory', title: 'Industry Advisors', description: 'Provided insights on industrial applications, scalability considerations, and technology transfer.', contributors: ['Biotech Companies', 'Pharmaceutical Experts', 'Industry Consultants'] }
+        ];
+
+        // 覆盖原有的数据定义
+        window.MEMBERS_DATA = MEMBERS_DATA;
+        window.ACTIVITIES = ACTIVITIES;
+        window.ATTRIBUTIONS = ATTRIBUTIONS;
+    </script>
+</body>
+</html>

@@ -259,56 +259,53 @@
     </div>
 </section>
         <!-- ==================== 第3部分：项目概述 ==================== -->
-        <!-- ==================== 第3部分：项目概述 (Mobile Optimized) ==================== -->
+        <!-- ==================== 第3部分：项目概述 (修复版) ==================== -->
 <section class="relative min-h-screen w-full flex items-center justify-center snap-start shrink-0 px-4 sm:px-6 lg:px-8 py-20">
-    <!-- 背景装饰 (保持不变) -->
+    <!-- 背景装饰 -->
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
         <div class="absolute -top-40 -right-40 w-80 h-80 bg-accent/5 rounded-full blur-3xl"></div>
         <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl"></div>
     </div>
 
     <div class="max-w-7xl mx-auto w-full relative z-10">
-        <!-- Grid布局：手机单列，间距加大 -->
+        <!-- 布局：手机单列，电脑双列 -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             
-            <!-- 左侧：视觉元素（mRNA + ribosome SVG 动画） -->
-            <!-- 手机端放在上方 (order-1)，且高度自适应 -->
+            <!-- 左侧：视觉动画区域 -->
+            <!-- 手机端放在上方 (order-1) -->
             <div class="relative order-1 w-full">
+                <!-- 容器：手机高度300px，电脑高度500px，确保有空间显示动画 -->
                 <div class="relative h-[300px] sm:h-[400px] md:h-[500px] rounded-3xl overflow-hidden border border-gray-800/50 shadow-2xl flex items-center justify-center bg-gradient-to-br from-primary via-primary-light to-primary">
-                    <div class="w-full h-full flex items-center justify-center p-4 md:p-8">
-                        <!-- Inline SVG animation 容器 -->
-                        <div class="mrna-anim-container w-full max-w-2xl h-full flex items-center">
-                            <!-- 这里的 style 保持不变，但 svg 的 height 改为 100% -->
+                    <div class="w-full h-full flex items-center justify-center p-4">
+                        <!-- 动画核心容器 -->
+                        <div class="mrna-anim-container w-full h-full flex items-center justify-center">
+                            
+                            <!-- ⚠️ 关键：这里找回了丢失的颜色样式 ⚠️ -->
                             <style>
-                                .mrna-anim-container svg { width:100%; height:100%; display:block; }
-                                /* ... (SVG 内部样式保持不变) ... */
+                                .mrna-anim-container svg { width: 100%; height: 100%; display: block; overflow: visible; }
+                                .mrna-mrna { stroke: rgba(200,200,255,0.28); stroke-width: 4; stroke-linecap: round; stroke-dasharray: 2 8; }
+                                .mrna-ribosome { fill: #00bcd4; filter: drop-shadow(0 0 10px rgba(0,188,212,0.5)); } /* 加了发光 */
+                                .mrna-ribosome-shell { fill: rgba(10,13,26,0.9); stroke: rgba(255,255,255,0.1); }
+                                /* 红色线条 (Misfolding) */
+                                .mrna-chain-fast { stroke: #FF4632; stroke-width: 6; fill: none; stroke-linejoin: round; stroke-linecap: round; filter: drop-shadow(0 0 8px rgba(255, 70, 50, 0.6)); }
+                                /* 青色线条 (Folding) */
+                                .mrna-chain-slow { stroke: #00DCc8; stroke-width: 6; fill: none; stroke-linejoin: miter; stroke-dasharray: 0; filter: drop-shadow(0 0 8px rgba(0, 220, 200, 0.6)); }
+                                .mrna-bump-region { stroke: rgba(255,200,80,0.45); stroke-width: 10; stroke-linecap: round; opacity: 0.9; }
+                                .mrna-label { fill: rgba(255,255,255,0.9); font-weight: 800; font-size: 24px; opacity: 0; transition: opacity 0.3s ease; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+                                .mrna-label-red { fill: #FF6B6B; }
+                                .mrna-label-green { fill: #4ADE80; }
                             </style>
-                            <!-- SVG 代码保持不变 ... -->
-                            <!-- (为节省篇幅，这里保留你原有的 SVG 代码) -->
-                            <svg id="mrna-svg" viewBox="0 0 1000 360" preserveAspectRatio="xMidYMid meet" aria-hidden="false">
-                                <!-- ... 原有 SVG 内容 ... -->
-                                <defs>
-                                    <filter id="chain-glow" x="-50%" y="-50%" width="200%" height="200%">
-                                        <feGaussianBlur stdDeviation="6" result="b" />
-                                        <feMerge>
-                                            <feMergeNode in="b" />
-                                            <feMergeNode in="SourceGraphic" />
-                                        </feMerge>
-                                    </filter>
-                                </defs>
+
+                            <!-- SVG 结构 -->
+                            <svg id="mrna-svg" viewBox="0 0 1000 360" preserveAspectRatio="xMidYMid meet">
                                 <path id="mrna-line" class="mrna-mrna" d="M60 160 L940 160" />
                                 <path id="bump-region" class="mrna-bump-region" d="" />
                                 <path id="chain-path" class="mrna-chain-fast" d="" />
                                 <g id="ribosome" transform="translate(80,160)">
-                                    <ellipse cx="0" cy="0" rx="28" ry="22" class="mrna-ribosome" />
-                                    <ellipse cx="0" cy="0" rx="20" ry="14" class="mrna-ribosome-shell" />
-                                    <g transform="translate(-6,-3)" fill="rgba(255,255,255,0.08)">
-                                        <circle cx="-6" cy="-2" r="2" />
-                                        <circle cx="3" cy="0" r="2" />
-                                        <circle cx="10" cy="3" r="2" />
-                                    </g>
-                                    <rect x="-34" y="-6" width="68" height="12" rx="6" fill="rgba(10,13,26,0.5)" />
+                                    <ellipse cx="0" cy="0" rx="35" ry="28" class="mrna-ribosome" />
+                                    <ellipse cx="0" cy="0" rx="25" ry="18" class="mrna-ribosome-shell" />
                                 </g>
+                                <!-- 文字标签 -->
                                 <text id="misfold-left" class="mrna-label mrna-label-red" x="260" y="60" text-anchor="middle">Too Fast = Misfolding</text>
                                 <text id="fold-right" class="mrna-label mrna-label-green" x="740" y="60" text-anchor="middle">Slow Down = Folding</text>
                             </svg>
@@ -318,43 +315,34 @@
             </div>
 
             <!-- 右侧：文字内容 -->
-            <!-- 手机端放在下方 (order-2) -->
             <div class="order-2 w-full text-left">
-                <div class="inline-flex items-center gap-3 text-accent font-mono text-xs md:text-sm mb-4 md:mb-6 animate-slide-up">
+                <div class="inline-flex items-center gap-3 text-accent font-mono text-xs md:text-sm mb-4">
                     <div class="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
                     <span>SYNTHETIC BIOLOGY INNOVATION</span>
                 </div>
                 
-                <!-- 修复标题重叠：调整字号 -->
-                <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 md:mb-8 animate-slide-up leading-tight" style="animation-delay: 0.1s">
+                <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">
                     Reprogramming<br>
                     <span class="text-accent">Protein Expression</span>
                 </h2>
                 
-                <div class="space-y-4 md:space-y-6 mb-8 md:mb-10">
-                    <p class="text-lg md:text-xl text-gray-300 leading-relaxed animate-slide-up" style="animation-delay: 0.2s">
+                <div class="space-y-4 mb-8">
+                    <p class="text-base md:text-xl text-gray-300 leading-relaxed">
                         We engineer <span class="text-accent font-semibold">translation kinetics</span> to control protein folding in <em>E. coli</em>.
                     </p>
-                    
-                    <p class="text-sm md:text-base text-gray-400 leading-relaxed animate-slide-up" style="animation-delay: 0.3s">
+                    <p class="text-sm md:text-base text-gray-400 leading-relaxed">
                         Our platform integrates codon engineering with subcellular targeting for complex multi-disulfide proteins.
                     </p>
                 </div>
 
-                <!-- 特性标签：手机端自动换行 -->
-                <div class="flex flex-wrap gap-3 mb-8 md:mb-10">
-                    <div class="px-3 py-1.5 md:px-4 md:py-2 bg-accent/10 border border-accent/20 rounded-lg text-accent text-xs md:text-sm font-medium animate-slide-up" style="animation-delay: 0.4s">
-                        tRNA Engineering
-                    </div>
-                    <div class="px-3 py-1.5 md:px-4 md:py-2 bg-green-500/10 border border-green-500/20 rounded-lg text-green-400 text-xs md:text-sm font-medium animate-slide-up" style="animation-delay: 0.5s">
-                        Signal Peptide Optimization
-                    </div>
-                    <div class="px-3 py-1.5 md:px-4 md:py-2 bg-purple-500/10 border border-purple-500/20 rounded-lg text-purple-400 text-xs md:text-sm font-medium animate-slide-up" style="animation-delay: 0.6s">
-                        Multi-Disulfide Validation
-                    </div>
+                <!-- 标签 -->
+                <div class="flex flex-wrap gap-2 mb-8">
+                    <div class="px-3 py-1.5 bg-accent/10 border border-accent/20 rounded-lg text-accent text-xs font-medium">tRNA Engineering</div>
+                    <div class="px-3 py-1.5 bg-green-500/10 border border-green-500/20 rounded-lg text-green-400 text-xs font-medium">Signal Peptide</div>
+                    <div class="px-3 py-1.5 bg-purple-500/10 border border-purple-500/20 rounded-lg text-purple-400 text-xs font-medium">Validation</div>
                 </div>
 
-                <a href="project.html" class="inline-flex items-center gap-3 text-accent hover:text-white transition-colors font-semibold group animate-slide-up text-sm md:text-base" style="animation-delay: 0.7s">
+                <a href="project.html" class="inline-flex items-center gap-3 text-accent hover:text-white transition-colors font-semibold group text-sm md:text-base">
                     <span>Learn about our engineering cycles</span>
                     <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-2 transition-transform"></i>
                 </a>
@@ -489,120 +477,109 @@
 </section>
         
         <!-- ==================== 第5部分：页脚 ==================== -->
-        <section class="h-screen w-full flex flex-col justify-between bg-primary snap-start shrink-0">
-            <!-- 顶部内容区域 -->
-            <div class="flex-grow flex items-center justify-center px-4 sm:px-6 lg:px-8">
-                <div class="max-w-4xl mx-auto w-full text-center">
-                    <!-- 标题 -->
-                    <div class="inline-flex items-center gap-3 text-accent font-mono text-sm mb-6">
-                        <i data-lucide="target" class="w-5 h-5"></i>
-                        <span>PROJECT IMPACT</span>
+        <!-- ==================== 第5部分：页脚 (Mobile Optimized) ==================== -->
+<!-- 1. 这里把原来的 h-screen 删掉了，改成了 min-h-screen 和 py-20 -->
+<section class="min-h-screen w-full flex flex-col justify-between bg-primary snap-start shrink-0 pt-20">
+    
+    <!-- 上半部分：影响力介绍 (Impact) -->
+    <div class="flex-grow flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
+        <div class="max-w-4xl mx-auto w-full text-center">
+            <div class="inline-flex items-center gap-3 text-accent font-mono text-xs md:text-sm mb-6">
+                <i data-lucide="target" class="w-5 h-5"></i>
+                <span>PROJECT IMPACT</span>
+            </div>
+            
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-10">
+                Advancing <span class="text-accent">Synthetic Biology</span>
+            </h2>
+            
+            <!-- 卡片容器：手机端垂直排列 (grid-cols-1) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-12">
+                <div class="bg-primary-light/50 p-6 md:p-8 rounded-2xl border border-gray-800/50 backdrop-blur-sm">
+                    <div class="w-12 h-12 md:w-14 md:h-14 bg-accent/10 rounded-xl flex items-center justify-center mb-6 mx-auto">
+                        <i data-lucide="graduation-cap" class="w-6 h-6 md:w-7 md:h-7 text-accent"></i>
                     </div>
-                    
-                    <h2 class="text-4xl font-bold text-white mb-10">
-                        Advancing <span class="text-accent">Synthetic Biology</span>
-                    </h2>
-                    
-                    <!-- 简洁的价值卡片 -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-                        <div class="bg-primary-light/50 p-8 rounded-2xl border border-gray-800/50 backdrop-blur-sm">
-                            <div class="w-14 h-14 bg-accent/10 rounded-xl flex items-center justify-center mb-6 mx-auto">
-                                <i data-lucide="graduation-cap" class="w-7 h-7 text-accent"></i>
-                            </div>
-                            <h3 class="text-xl font-bold text-white mb-4">Scientific Contribution</h3>
-                            <p class="text-gray-400">
-                                Deepening understanding of translation kinetics and co-translational folding mechanisms.
-                            </p>
-                        </div>
-                        
-                        <div class="bg-primary-light/50 p-8 rounded-2xl border border-gray-800/50 backdrop-blur-sm">
-                            <div class="w-14 h-14 bg-green-500/10 rounded-xl flex items-center justify-center mb-6 mx-auto">
-                                <i data-lucide="leaf" class="w-7 h-7 text-green-400"></i>
-                            </div>
-                            <h3 class="text-xl font-bold text-white mb-4">Industrial Application</h3>
-                            <p class="text-gray-400">
-                                Enabling efficient production of complex therapeutic and industrial proteins.
-                            </p>
-                        </div>
+                    <h3 class="text-lg md:text-xl font-bold text-white mb-3">Scientific Contribution</h3>
+                    <p class="text-sm text-gray-400">
+                        Deepening understanding of translation kinetics and co-translational folding mechanisms.
+                    </p>
+                </div>
+                
+                <div class="bg-primary-light/50 p-6 md:p-8 rounded-2xl border border-gray-800/50 backdrop-blur-sm">
+                    <div class="w-12 h-12 md:w-14 md:h-14 bg-green-500/10 rounded-xl flex items-center justify-center mb-6 mx-auto">
+                        <i data-lucide="leaf" class="w-6 h-6 md:w-7 md:h-7 text-green-400"></i>
                     </div>
-                    
-                    <!-- 号召行动 -->
-                    <div class="mb-12">
-                        <a href="team.html" class="inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-accent to-blue-500 text-primary font-bold rounded-xl hover:from-white hover:to-accent transition-all duration-300 shadow-[0_10px_40px_rgba(0,217,255,0.3)] group">
-                            <i data-lucide="users" class="w-6 h-6"></i>
-                            <span>Meet Our Interdisciplinary Team</span>
-                            <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-2 transition-transform"></i>
-                        </a>
-                    </div>
+                    <h3 class="text-lg md:text-xl font-bold text-white mb-3">Industrial Application</h3>
+                    <p class="text-sm text-gray-400">
+                        Enabling efficient production of complex therapeutic and industrial proteins.
+                    </p>
                 </div>
             </div>
             
-            <!-- 页脚 -->
-            <footer class="bg-gradient-to-br from-primary-light/50 to-primary/50 border-t border-accent/10 pt-12 pb-8 backdrop-blur-sm">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
-                        <!-- 项目简介 -->
-                        <div class="space-y-4">
-                            <div>
-                                <span class="text-2xl font-bold tracking-widest text-white">
-                                    Dogma<span class="text-accent">OS</span>
-                                </span>
-                            </div>
-                            <p class="text-gray-400 text-sm leading-relaxed">
-                                An integrated platform for reprogramming prokaryotic protein expression via codon engineering and translation kinetics control.
-                            </p>
-                        </div>
-
-                        <!-- 导航链接 -->
-                        <div>
-                            <h3 class="text-lg font-bold text-accent mb-5">Explore</h3>
-                            <div class="grid grid-cols-2 gap-3">
-                                <a href="project.html" class="text-gray-400 hover:text-accent transition-colors text-sm">Project</a>
-                                <a href="wetlab.html" class="text-gray-400 hover:text-accent transition-colors text-sm">Wetlab</a>
-                                <a href="hp.html" class="text-gray-400 hover:text-accent transition-colors text-sm">Human Practices</a>
-                                <a href="team.html" class="text-gray-400 hover:text-accent transition-colors text-sm">Team</a>
-                                <a href="award.html" class="text-gray-400 hover:text-accent transition-colors text-sm">Awards</a>
-                            </div>
-                        </div>
-
-                        <!-- 联系信息 -->
-                        <div>
-                            <h3 class="text-lg font-bold text-accent mb-5">Connect</h3>
-                            <div class="space-y-3 text-sm text-gray-400">
-                                <div class="flex items-center gap-3">
-                                    <i data-lucide="map-pin" class="w-4 h-4 text-accent/70"></i>
-                                    <span>Xi'an Jiaotong-Liverpool University</span>
-                                </div>
-                                <div class="flex items-center gap-3">
-                                    <i data-lucide="mail" class="w-4 h-4 text-accent/70"></i>
-                                    <span>contact@dogmaos-igem.org</span>
-                                </div>
-                            </div>
-                            <div class="flex gap-4 mt-6">
-                                <a href="#" class="w-10 h-10 rounded-full bg-accent/5 flex items-center justify-center text-accent hover:bg-accent hover:text-primary transition-all duration-300">
-                                    <i data-lucide="github" class="w-4 h-4"></i>
-                                </a>
-                                <a href="#" class="w-10 h-10 rounded-full bg-accent/5 flex items-center justify-center text-accent hover:bg-accent hover:text-primary transition-all duration-300">
-                                    <i data-lucide="twitter" class="w-4 h-4"></i>
-                                </a>
-                            </div>
-                        </div>
+            <div class="mb-12">
+                <a href="team.html" class="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-accent to-blue-500 text-primary font-bold rounded-xl hover:from-white hover:to-accent transition-all duration-300 shadow-[0_10px_40px_rgba(0,217,255,0.3)] group text-sm md:text-base">
+                    <i data-lucide="users" class="w-5 h-5"></i>
+                    <span>Meet Our Interdisciplinary Team</span>
+                    <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-2 transition-transform"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 下半部分：真正的 Footer 链接 -->
+    <footer class="bg-gradient-to-br from-primary-light/50 to-primary/50 border-t border-accent/10 pt-12 pb-8 backdrop-blur-sm mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12 text-center md:text-left">
+                <!-- 项目简介 -->
+                <div class="space-y-4">
+                    <div>
+                        <span class="text-xl md:text-2xl font-bold tracking-widest text-white">
+                            Dogma<span class="text-accent">OS</span>
+                        </span>
                     </div>
+                    <p class="text-gray-400 text-xs md:text-sm leading-relaxed">
+                        An integrated platform for reprogramming prokaryotic protein expression.
+                    </p>
+                </div>
 
-                    <!-- 版权和分割线 -->
-                    <div class="pt-6 border-t border-white/10">
-                        <div class="text-center">
-                            <p class="text-gray-500 text-sm">
-                                © 2025 DogmaOS iGEM Team. Content licensed under Creative Commons Attribution 4.0
-                            </p>
-                            <p class="text-gray-600 text-xs mt-2">
-                                iGEM Competition 2025 | XJTLU-Science-China
-                            </p>
+                <!-- 导航链接 -->
+                <div>
+                    <h3 class="text-base md:text-lg font-bold text-accent mb-5">Explore</h3>
+                    <div class="grid grid-cols-2 gap-3 justify-items-center md:justify-items-start">
+                        <a href="project.html" class="text-gray-400 hover:text-accent transition-colors text-xs md:text-sm">Project</a>
+                        <a href="wetlab.html" class="text-gray-400 hover:text-accent transition-colors text-xs md:text-sm">Wetlab</a>
+                        <a href="hp.html" class="text-gray-400 hover:text-accent transition-colors text-xs md:text-sm">Human Practices</a>
+                        <a href="team.html" class="text-gray-400 hover:text-accent transition-colors text-xs md:text-sm">Team</a>
+                    </div>
+                </div>
+
+                <!-- 联系信息 -->
+                <div>
+                    <h3 class="text-base md:text-lg font-bold text-accent mb-5">Connect</h3>
+                    <div class="space-y-3 text-xs md:text-sm text-gray-400 flex flex-col items-center md:items-start">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-accent/70"></i>
+                            <span>Xi'an Jiaotong-Liverpool University</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="mail" class="w-4 h-4 text-accent/70"></i>
+                            <span>contact@dogmaos-igem.org</span>
                         </div>
                     </div>
                 </div>
-            </footer>
-        </section>
+            </div>
+
+            <!-- 版权 -->
+            <div class="pt-6 border-t border-white/10">
+                <div class="text-center">
+                    <p class="text-gray-500 text-xs md:text-sm">
+                        © 2025 DogmaOS iGEM Team.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</section>
     </div>
 
     <!-- ==================== 脚本加载 ==================== -->

@@ -2,51 +2,64 @@
 
 /** 团队成员数据 - 完全按照文档中的分组 */
 const MEMBERS_DATA = [
-    // 团队领导
-    { id: '1', name: 'Feiyu Yang', role: 'Student Team Leader', group: 'Wet Team', quote: 'Leading into the unknown with scientific rigor.', emoji: '🧬' },
+    // 团队领导 
+    { id: '1', name: 'Feiyu Yang', role: 'Student Team Leader', programme: 'Pharmaceutical Sciences', group: 'Wet Team', quote: 'Leading into the unknown with scientific rigor.', emoji: '🧬' },
+    { id: '2', name: 'Zixu Xu', role: 'Student Team Leader', programme: 'Applied Mathematics', group: 'Modeling Team', quote: 'Modeling excellence.', emoji: '📊' },
+    { id: '3', name: 'Tingting Chen', role: 'Student Team Leader', programme: 'Biomedical Sciences', group: 'HP Team', quote: 'Science for everyone.', emoji: '🤝' },
     
-    // 湿实验组成员 - 完全按照文档顺序
-    { id: '2', name: 'Fangying Xiang', role: 'Researcher', group: 'Wet Team', quote: 'One micropipette at a time.', emoji: '🔬' },
-    { id: '3', name: 'Ge Gao', role: 'Researcher', group: 'Wet Team', quote: 'Precision and passion in research.', emoji: '🔬' },
-    { id: '5', name: 'Jiaxing Ye', role: 'Researcher', group: 'Wet Team', quote: 'Discovery through diligence.', emoji: '🔬' },
-    { id: '6', name: 'Jiaying Gu', role: 'Researcher', group: 'Wet Team', quote: 'Innovation in the lab.', emoji: '🔬' },
-    { id: '8', name: 'Ruizhong Shu', role: 'Researcher', group: 'Wet Team', quote: 'Dedicated to research excellence.', emoji: '🔬' },
-    { id: '15', name: 'Yinren Zhao', role: 'Researcher', group: 'Wet Team', quote: 'Precision in science.', emoji: '🔬' },
+    // 学生团队成员 
+    { id: '4', name: 'Zhenyayuan Cao', programme: 'Biopharmaceuticals', group: 'Wet Team', quote: 'Science communication matters.', emoji: '🔬' },
+    { id: '5', name: 'Jiaqi Zheng', programme: 'Artificial Intelligence', group: 'Web Team', quote: 'Coding DNA one byte at a time.', emoji: '💻' },
+    { id: '6', name: 'Yinren Zhao', programme: 'Biological Science', group: 'Wet Team', quote: 'Precision in science.', emoji: '🔬' },
+    { id: '7', name: 'Jiaxing Ye', programme: 'Bioinformatics', group: 'Wet Team', quote: 'Discovery through diligence.', emoji: '🔬' },
+    { id: '8', name: 'Keyi Zhao', programme: 'Bioinformatics', group: 'Web Team', quote: 'Making science beautiful.', emoji: '🎨' },
+    { id: '9', name: 'Shunran Wang', programme: 'Bioinformatics', group: 'HP Team', quote: 'Building bridges in science.', emoji: '🤝' },
+    { id: '10', name: 'Ziyun Shi', programme: 'Biological Science', group: 'HP Team', quote: 'Sharing scientific knowledge.', emoji: '🤝' },
+    { id: '11', name: 'Yuehan Hu', programme: 'Bioinformatics', group: 'HP Team', quote: 'Public engagement in science.', emoji: '🤝' },
+    { id: '12', name: 'Ruizhong Shu', programme: 'Biological Science', group: 'Wet Team', quote: 'Dedicated to research excellence.', emoji: '🔬' },
+    { id: '13', name: 'Ge Gao', programme: 'Pharmaceutical Sciences', group: 'Wet Team', quote: 'Precision and passion in research.', emoji: '🔬' },
+    { id: '14', name: 'Yue Yu', programme: 'Bioinformatics', group: 'Modeling Team', quote: 'Data-driven discovery.', emoji: '📊' },
+    { id: '15', name: 'Siqi Liu', programme: 'Bioinformatics', group: 'Modeling Team', quote: 'Simulating biological systems.', emoji: '📊' },
+    { id: '16', name: 'Jiaying Gu', programme: 'Biological Science', group: 'Wet Team', quote: 'Innovation in the lab.', emoji: '🔬' },
+    { id: '17', name: 'Yiming Huang', programme: 'Bioinformatics', group: 'Modeling Team', quote: 'Simulating the future.', emoji: '📊' },
+    { id: '18', name: 'Ziming Sang', programme: 'UG-1', group: 'Modeling Team', quote: 'Analyzing tRNA abundance and codon usage patterns.', emoji: '📊' },
+    { id: '19', name: 'Fangying Xiang', programme: 'UG-1', group: 'Wet Team', quote: 'One micropipette at a time.', emoji: '🔬' },
+    { id: '20', name: 'Tianle Yang', programme: 'UG-1', group: 'HP Team', quote: 'Engagement through education.', emoji: '🤝' },
+    { id: '21', name: 'Ruoxuan Chen', programme: 'UG-1', group: 'HP Team', quote: 'Connecting science with society.', emoji: '🤝' },
     
-    // 网络组成员 - 完全按照文档顺序
-    { id: '4', name: 'Jiaqi Zheng', role: 'Frontend Lead', group: 'Web Team', quote: 'Coding DNA one byte at a time.', emoji: '💻' },
-    { id: '7', name: 'Keyi Zhao', role: 'Designer', group: 'Web Team', quote: 'Making science beautiful.', emoji: '🎨' },
-    
-    // 人文实践组成员 - 完全按照文档顺序
-    { id: '9', name: 'Ruoxuan Chen', role: 'Outreach', group: 'HP Team', quote: 'Connecting science with society.', emoji: '🤝' },
-    { id: '10', name: 'Shunran Wang', role: 'Outreach', group: 'HP Team', quote: 'Building bridges in science.', emoji: '🤝' },
-    { id: '12', name: 'Tianle Yang', role: 'Outreach', group: 'HP Team', quote: 'Engagement through education.', emoji: '🤝' },
-    { id: '13', name: 'Tingting Chen', role: 'Outreach', group: 'HP Team', quote: 'Science for everyone.', emoji: '🤝' },
-    { id: '17', name: 'Yuehan Hu', role: 'Outreach', group: 'HP Team', quote: 'Public engagement in science.', emoji: '🤝' },
-    { id: '18', name: 'Zhenyayuan Cao', role: 'Outreach', group: 'HP Team', quote: 'Science communication matters.', emoji: '🤝' },
-    { id: '20', name: 'Ziyun Shi', role: 'Outreach', group: 'HP Team', quote: 'Sharing scientific knowledge.', emoji: '🤝' },
-    
-    // 模型组成员 - 完全按照文档顺序
-    { id: '11', name: 'Siqi Liu', role: 'Modeler', group: 'Model Team', quote: 'Simulating biological systems.', emoji: '📊' },
-    { id: '14', name: 'Yiming Huang', role: 'Modeler', group: 'Model Team', quote: 'Simulating the future.', emoji: '📊' },
-    { id: '16', name: 'Yue Yu', role: 'Modeler', group: 'Model Team', quote: 'Data-driven discovery.', emoji: '📊' },
-    { id: '19', name: 'Zixu Xu', role: 'Modeler', group: 'Model Team', quote: 'Modeling excellence.', emoji: '📊' },
-    { id: '21', name: 'Ziming Sang', role: 'Data Analyst', group: 'Model Team', quote: 'Analyzing tRNA abundance and codon usage patterns.', emoji: '📊' },
+    // 导师(PIs)
+    { id: '22', name: 'Yongtao Zhu', role: 'Principal Investigator', programme: 'Department of Biosciences and Bioinformatics', group: 'PI', quote: 'Mentoring the next generation.', emoji: '👨‍🎓' },
+    { id: '23', name: 'Kevin C. Chan', role: 'Secondary Principal Investigator', programme: 'Department of Biosciences and Bioinformatics', group: 'PI', quote: 'Guiding discovery.', emoji: '👨‍🎓' },
+    { id: '24', name: 'Ziwen Xie', role: 'Instructor', programme: 'Department of Biosciences and Bioinformatics', group: 'PI', quote: 'Supporting innovation.', emoji: '👨‍🎓' },
 
-    // 导师(PIs) - 完全按照文档顺序
-    { id: '22', name: 'Yongtao Zhu', role: 'Principal Investigator', group: 'PI', quote: 'Mentoring the next generation.', emoji: '👨‍🎓' },
-    { id: '23', name: 'Kevin C. Chan', role: 'Secondary Principal Investigator', group: 'PI', quote: 'Guiding discovery.', emoji: '👨‍🎓' },
-    { id: '24', name: 'Ziwen Xie', role: 'Instructor', group: 'PI', quote: 'Supporting innovation.', emoji: '👨‍🎓' },
+    // Advisors
+    { id: '36', name: 'Lanlan Han', role: 'Advisor', programme: 'Department of Biosciences and Bioinformatics', group: 'Advisors', emoji: '👨‍🏫' },
+    { id: '37', name: 'Shuhua Wang', role: 'Advisor', programme: 'Department of Biosciences and Bioinformatics', group: 'Advisors', emoji: '👨‍🏫' },
+    { id: '38', name: 'Weiwei Dai', role: 'Advisor', programme: 'Department of Biosciences and Bioinformatics', group: 'Advisors', emoji: '👨‍🏫' },
+    { id: '39', name: 'Yong Shen', role: 'Advisor', programme: 'Department of Biosciences and Bioinformatics', group: 'Advisors', emoji: '👨‍🏫' },
+    { id: '40', name: 'Kam Antony', role: 'Advisor', programme: 'Department of Biosciences and Bioinformatics', group: 'Advisors', emoji: '👨‍🏫' },
+    { id: '41', name: 'Leewei Lim', role: 'Advisor', programme: 'Department of Biosciences and Bioinformatics', group: 'Advisors', emoji: '👨‍🏫' },
+    { id: '22', name: 'Chenxi Xu', role: 'Advisor', programme: 'Applied Mathematics', group: 'Advisors', quote: 'Supporting student research.', emoji: '👨‍🏫' },
+    { id: '23', name: 'Rui Chen', role: 'Advisor', programme: 'Biomedical Sciences', group: 'Advisors', quote: 'Guiding experimental design.', emoji: '👨‍🏫' },
+    { id: '24', name: 'Jie Zhong', role: 'Advisor', programme: 'Biological Science', group: 'Advisors', quote: 'Mentoring young scientists.', emoji: '👨‍🏫' },
+    { id: '25', name: 'Shuning Dong', role: 'Advisor', programme: 'Biological Science', group: 'Advisors', quote: 'Providing technical guidance.', emoji: '👨‍🏫' },
+    { id: '26', name: 'Jimin Hong', role: 'Advisor', programme: 'Pharmaceutical Sciences', group: 'Advisors', quote: 'Expert in pharmaceutical sciences.', emoji: '👨‍🏫' },
+    { id: '27', name: 'Hanming Hu', role: 'Advisor', programme: 'Biopharmaceuticals', group: 'Advisors', quote: 'Biopharmaceutical expertise.', emoji: '👨‍🏫' },
+    { id: '28', name: 'Zhicheng Yang', role: 'Advisor', programme: 'Bioinformatics', group: 'Advisors', quote: 'Bioinformatics support.', emoji: '👨‍🏫' },
+    { id: '29', name: 'Shulei He', role: 'Advisor', programme: 'Biological Science', group: 'Advisors', quote: 'Biological research guidance.', emoji: '👨‍🏫' },
+    { id: '30', name: 'Yifan Hou', role: 'Advisor', programme: 'Biopharmaceuticals', group: 'Advisors', quote: 'Biopharmaceutical knowledge sharing.', emoji: '👨‍🏫' },
+    { id: '31', name: 'Tianran Chen', role: 'Advisor', programme: 'Biopharmaceuticals', group: 'Advisors', quote: 'Supporting experimental work.', emoji: '👨‍🏫' },
+    { id: '32', name: 'Yaqi Zhang', role: 'Advisor', programme: 'Biological Science', group: 'Advisors', quote: 'Mentoring biological research.', emoji: '👨‍🏫' },
 ];
 
-/** 项目活动时间线数据 - 仅保留文档中提到的活动 */
+/** 项目活动时间线数据 */
 const ACTIVITIES = [
     { date: 'Jan 2025', title: 'Project Launch', description: 'Determined research direction and goals.', tags: ['Planning'] },
     { date: 'Mar 2025', title: 'Wet Lab Setup', description: 'Established strict safety protocols and calibrated equipment.', tags: ['Safety'] },
     { date: 'Jun 2025', title: 'Public Engagement', description: 'Community outreach event introducing synthetic biology.', tags: ['Education'] }
 ];
 
-/** 致谢与支持数据 - 简化版 */
+/** 致谢与支持数据 */
 const ATTRIBUTIONS = [
     { 
         icon: 'graduation-cap', 
@@ -145,9 +158,11 @@ const renderMembers = (filter = 'All') => {
                 <!-- 团队颜色标识 -->
                 <div class="absolute bottom-0 left-0 right-0 h-1 ${
                     m.group === 'Wet Team' ? 'bg-accent' :
-                    m.group === 'Model Team' ? 'bg-purple-500' :
+                    m.group === 'Modeling Team' ? 'bg-purple-500' :
                     m.group === 'HP Team' ? 'bg-green-500' :
-                    m.group === 'Web Team' ? 'bg-blue-500' : 'bg-yellow-500'
+                    m.group === 'Web Team' ? 'bg-blue-500' :
+                    m.group === 'Advisors' ? 'bg-yellow-500' :
+                    'bg-orange-500'  // PI组
                 }"></div>
             </div>
             <!-- 成员信息区域 -->
@@ -158,7 +173,8 @@ const renderMembers = (filter = 'All') => {
                     </span>
                 </div>
                 <h3 class="text-xl font-bold text-white mb-1 group-hover:text-accent transition-colors">${m.name}</h3>
-                <p class="text-sm text-gray-400 mb-4 font-medium">${m.role}</p>
+                <p class="text-sm text-gray-400 mb-2 font-medium">${m.role}</p>
+                <p class="text-xs text-gray-500 mb-3">${m.programme}</p>
                 <div class="w-full h-px bg-gray-800 mb-4"></div>
                 <p class="text-xs text-gray-500 italic leading-relaxed">"${m.quote}"</p>
             </div>
@@ -174,7 +190,7 @@ const setupFilters = () => {
     if (!container) return;
     
     // 所有可用的分类 - 按照文档中的分组
-    const cats = ['All', 'Wet Team', 'Model Team', 'HP Team', 'Web Team', 'PI'];
+    const cats = ['All', 'Wet Team', 'Modeling Team', 'HP Team', 'Web Team', 'Advisors', 'PI'];
     
     // 生成过滤按钮
     container.innerHTML = cats.map(cat => `

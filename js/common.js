@@ -272,20 +272,63 @@ document.addEventListener('DOMContentLoaded', () => {
             return pts;
         }
 
-        function makePolyPoints(headX, tailLen){
-            const pts = [];
-            const t0 = Date.now()/300;
-            tailLen = tailLen || baseTailSlow;
-            for (let i=0;i<tailLen;i++){
-                const nx = headX - i*16;
-                const fall = i * 0.35;
-                const smoothNoise = Math.sin(i*0.25 + t0*0.6) * (4 * (1 - i/tailLen));
-                const ny = 150 - fall + smoothNoise;
-                pts.push([nx, ny]);
-            }
-            return pts;
+       // 修改后的函数：生成与 Mini-game 一致的绿色六边形折叠结构
+// 修改后的函数：在核糖体【后上方】生成紧密的花瓣晶体状结构
+function makePolyPoints(headX, tailLen) {
+    const pts = [];
+    
+    // 1. 设定悬浮位置
+    // headX - 40: 在核糖体左侧 (后方)
+    // 90: 在 mRNA (160) 上方 70px 处，确保绝不遮挡 mRNA
+    const centerX = headX - 40;
+    const centerY = 90; 
+
+    // 确保有足够的长度来渲染形状
+    const effectiveLen = Math.max(tailLen, 20);
+
+    for (let i = 0; i < effectiveLen; i++) {
+        // === 阶段 A：牵引绳 (前 10 个点) ===
+        // 这是一条从核糖体(160)向上延伸到折叠中心(90)的连接线
+        if (i < 10) {
+            const progress = i / 10;
+            
+            // X轴：从核糖体中心平滑过渡到后方
+            const currX = headX - (progress * 40);
+            
+            // Y轴：关键！从 160 (mRNA高度) 向上升到 90 (空中)
+            // 使用 easeOut 曲线让线条看起来自然被拉起，而不是生硬的直线
+            // 简单的缓动公式：1 - (1-x)^2
+            const ease = 1 - Math.pow(1 - progress, 2);
+            const currY = 160 - (ease * (160 - centerY));
+            
+            pts.push([currX, currY]);
+            continue;
         }
 
+        // === 阶段 B：花瓣/晶体 螺旋体 ===
+        const step = i - 10;
+        
+        // [参数 1] 旋转速度 (决定缠绕紧密度)
+        const theta = step * 0.6; 
+        
+        // [参数 2] 形状调制器 (花瓣效果)
+        // Math.sin(2.5 * theta) 会产生 5 个花瓣/角的几何感
+        // 1 + 0.3 * ... 决定了“花瓣”的深浅
+        const shapeMod = 1 + 0.3 * Math.sin(2.5 * theta);
+        
+        // [参数 3] 半径增长
+        // 初始半径 5px，随步数缓慢增长，形成紧密的团块
+        // 乘以 shapeMod 让圆圈变成异形
+        const radius = (5 + step * 1.5) * shapeMod;
+
+        // 计算坐标 (基于悬浮的中心点)
+        const nx = centerX + radius * Math.cos(theta);
+        const ny = centerY + radius * Math.sin(theta);
+
+        pts.push([nx, ny]);
+    }
+    return pts;
+}
         function ptsToPath(pts, smooth){
             if (!pts || pts.length===0) return '';
             if (!smooth){
@@ -320,8 +363,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 vx = fastSpeed;
             } else {
                 const tailLen = Math.min(maxTailExtended, baseTailSlow + Math.floor((x - bumpX) / 4));
-                const pts = makePolyPoints(x - 12, tailLen);
-                chainPath.setAttribute('d', ptsToPath(pts, false));
+                const pts = makePolyPoints(x, tailLen);
+                chainPath.setAttribute('d', ptsToPath(pts, true));
                 chainPath.setAttribute('class', 'mrna-chain-slow');
                 if (misfoldLeft) misfoldLeft.style.opacity = 0;
                 if (foldRight) foldRight.style.opacity = 1;

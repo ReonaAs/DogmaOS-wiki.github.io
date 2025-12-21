@@ -248,12 +248,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         let x = startX;
-        const fastSpeed = 4.2;
-        const slowSpeed = 1.2;
+        const fastSpeed = 2.0;
+        const slowSpeed = 0.7;
         let vx = fastSpeed;
         const baseTailFast = 40;
         const baseTailSlow = 20;
-        const maxTailExtended = 80;
+        const maxTailExtended = 2000;
 
         function makeWavyPoints(headX, tailLen){
             const pts = [];
@@ -362,14 +362,22 @@ function makePolyPoints(headX, tailLen) {
                 if (foldRight) foldRight.style.opacity = 0;
                 vx = fastSpeed;
             } else {
-                const tailLen = Math.min(maxTailExtended, baseTailSlow + Math.floor((x - bumpX) / 4));
-                const pts = makePolyPoints(x, tailLen);
-                chainPath.setAttribute('d', ptsToPath(pts, true));
-                chainPath.setAttribute('class', 'mrna-chain-slow');
-                if (misfoldLeft) misfoldLeft.style.opacity = 0;
-                if (foldRight) foldRight.style.opacity = 1;
-                if (vx > slowSpeed) vx = Math.max(slowSpeed, vx - 0.22);
-            }
+                const tailLen = baseTailSlow + Math.floor((x - bumpX) / 6);
+    
+    // 生成点阵 (使用你之前喜欢的“后上方悬浮”算法)
+    const pts = makePolyPoints(x, tailLen);
+    
+    // 渲染路径 (开启平滑)
+    chainPath.setAttribute('d', ptsToPath(pts, true));
+    chainPath.setAttribute('class', 'mrna-chain-slow');
+    
+    // 文字显示控制
+    if (misfoldLeft) misfoldLeft.style.opacity = 0;
+    if (foldRight) foldRight.style.opacity = 1;
+    
+    // 极平滑的减速刹车逻辑
+    if (vx > slowSpeed) vx = Math.max(slowSpeed, vx - 0.02); // 刹车距离拉得更长
+}
 
             if (bumpRegion){
                 const dist = Math.abs(x - bumpX);
